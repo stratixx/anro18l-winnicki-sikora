@@ -1,0 +1,13 @@
+backgroun_r: 255
+background_b: 203
+background_g: 192
+background_r: 255
+rosdistro: 'kinetic
+
+  '
+roslaunch:
+  uris: {host_leopard_robotyka_ia_pw_edu_pl__37555: 'http://leopard.robotyka.ia.pw.edu.pl:37555/'}
+rosversion: '1.12.12
+
+  '
+run_id: 95c5284e-1d68-11e8-a28a-ecb1d7602b67
