@@ -1,7 +1,7 @@
 <launch>
 
-	<group ns="turtlesim1">
-		<node pkg="turtlesim" name="sim" type="turtlesim_node"/>
-	</group>
+	<node pkg="turtlesim" name="turtle1" type="turtlesim_node"/>
+
+	<node pkg="lab1" name="operator" type="operator.py"/>
 
 </launch>
