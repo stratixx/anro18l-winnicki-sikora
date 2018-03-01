@@ -1,2 +1,2 @@
-
+beginner_tutorials
 -DCATKIN_DEVEL_PREFIX=/home/jsikora/anro18l-winnicki-sikora/catkin_ws/devel -DCMAKE_INSTALL_PREFIX=/home/jsikora/anro18l-winnicki-sikora/catkin_ws/install -G Unix Makefiles
