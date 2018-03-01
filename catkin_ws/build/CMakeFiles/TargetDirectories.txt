@@ -54,3 +54,10 @@
 /home/jsikora/src/anro18l-winnicki-sikora/catkin_ws/build/beginner_tutorials/CMakeFiles/test.dir
 /home/jsikora/src/anro18l-winnicki-sikora/catkin_ws/build/beginner_tutorials/CMakeFiles/_beginner_tutorials_generate_messages_check_deps_Num.dir
 /home/jsikora/src/anro18l-winnicki-sikora/catkin_ws/build/beginner_tutorials/CMakeFiles/beginner_tutorials_geneus.dir
+/home/jsikora/src/anro18l-winnicki-sikora/catkin_ws/build/lab1/CMakeFiles/list_install_components.dir
+/home/jsikora/src/anro18l-winnicki-sikora/catkin_ws/build/lab1/CMakeFiles/install.dir
+/home/jsikora/src/anro18l-winnicki-sikora/catkin_ws/build/lab1/CMakeFiles/rebuild_cache.dir
+/home/jsikora/src/anro18l-winnicki-sikora/catkin_ws/build/lab1/CMakeFiles/install/strip.dir
+/home/jsikora/src/anro18l-winnicki-sikora/catkin_ws/build/lab1/CMakeFiles/install/local.dir
+/home/jsikora/src/anro18l-winnicki-sikora/catkin_ws/build/lab1/CMakeFiles/test.dir
+/home/jsikora/src/anro18l-winnicki-sikora/catkin_ws/build/lab1/CMakeFiles/edit_cache.dir
