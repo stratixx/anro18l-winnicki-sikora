@@ -1,0 +1,8 @@
+prefix=/home/jsikora/src/anro18l-winnicki-sikora/catkin_ws/install
+
+Name: beginner_tutorials
+Description: Description of beginner_tutorials
+Version: 1.0.1
+Cflags: -I/home/jsikora/src/anro18l-winnicki-sikora/catkin_ws/install/include
+Libs: -L/home/jsikora/src/anro18l-winnicki-sikora/catkin_ws/install/lib -lbeginner_tutorials
+Requires: roscpp rospy std_msgs message_runtime
