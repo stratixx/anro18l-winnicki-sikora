@@ -43,10 +43,10 @@ RM = /usr/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/jsikora/anro18l-winnicki-sikora/catkin_ws/src
+CMAKE_SOURCE_DIR = /home/jsikora/src/anro18l-winnicki-sikora/catkin_ws/src
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/jsikora/anro18l-winnicki-sikora/catkin_ws/build
+CMAKE_BINARY_DIR = /home/jsikora/src/anro18l-winnicki-sikora/catkin_ws/build
 
 # Utility rule file for tests.
 
@@ -67,6 +67,6 @@ CMakeFiles/tests.dir/clean:
 .PHONY : CMakeFiles/tests.dir/clean
 
 CMakeFiles/tests.dir/depend:
-	cd /home/jsikora/anro18l-winnicki-sikora/catkin_ws/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/jsikora/anro18l-winnicki-sikora/catkin_ws/src /home/jsikora/anro18l-winnicki-sikora/catkin_ws/src /home/jsikora/anro18l-winnicki-sikora/catkin_ws/build /home/jsikora/anro18l-winnicki-sikora/catkin_ws/build /home/jsikora/anro18l-winnicki-sikora/catkin_ws/build/CMakeFiles/tests.dir/DependInfo.cmake --color=$(COLOR)
+	cd /home/jsikora/src/anro18l-winnicki-sikora/catkin_ws/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/jsikora/src/anro18l-winnicki-sikora/catkin_ws/src /home/jsikora/src/anro18l-winnicki-sikora/catkin_ws/src /home/jsikora/src/anro18l-winnicki-sikora/catkin_ws/build /home/jsikora/src/anro18l-winnicki-sikora/catkin_ws/build /home/jsikora/src/anro18l-winnicki-sikora/catkin_ws/build/CMakeFiles/tests.dir/DependInfo.cmake --color=$(COLOR)
 .PHONY : CMakeFiles/tests.dir/depend
 

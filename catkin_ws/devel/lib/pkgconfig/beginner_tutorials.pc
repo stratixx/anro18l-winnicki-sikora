@@ -1,8 +1,0 @@
-prefix=/home/jsikora/anro18l-winnicki-sikora/catkin_ws/devel
-
-Name: beginner_tutorials
-Description: Description of beginner_tutorials
-Version: 1.0.0
-Cflags: 
-Libs: -L/home/jsikora/anro18l-winnicki-sikora/catkin_ws/devel/lib 
-Requires: 
