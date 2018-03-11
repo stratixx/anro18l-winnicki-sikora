@@ -2,27 +2,39 @@ import rospy
 while True:
 	try:
 		straight = str(raw_input("Podaj klawisz jazdy na wprost: "))
-		break
+		if(len(straight)==1):
+			break
+		else:
+			print("Nieprawidlowa dlugosc, podaj jeden klawisz")
 	except ValueError:
 		print("Nieprawidlowy klawisz")
 while True:
 	try:
 		back = str(raw_input("Podaj klawisz jazdy do tylu: "))
-		break
+		if(len(back)==1):
+			break
+		else:
+			print("Nieprawidlowa dlugosc, podaj jeden klawisz")
 	except ValueError:
 		print("Nieprawidlowy klawisz: ")
 
 while True:
 	try:
 		left = str(raw_input("Podaj klawisz skretu w lewo: "))
-		break
+		if(len(left)==1):
+			break
+		else:
+			print("Nieprawidlowa dlugosc, podaj jeden klawisz")
 	except ValueError:
 		print("Nieprawidlowy klawisz: ")
 
 while True:
 	try:
 		right = str(raw_input("Podaj klawisz skretu w prawo: "))
-		break
+		if(len(right)==1):
+			break
+		else:
+			print("Nieprawidlowa dlugosc, podaj jeden klawisz")
 	except ValueError:
 		print("Nieprawidlowy klawisz: ")
 
