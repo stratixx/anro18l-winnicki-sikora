@@ -66,14 +66,16 @@ def talker():
 
         rate.sleep()
 
-init_params()
 
-print ('Reading from keyboard')
-print ('---------------------------')
-print ('Przod: ', straight, ', Tyl: ', back,', Lewo: ', left,', Prawo: ', right)
 
 if __name__ == '__main__':
-    try:
+	init_params()
+
+	print ('Reading from keyboard')
+	print ('---------------------------')
+	print ('Przod: ', straight, ', Tyl: ', back,', Lewo: ', left,', Prawo: ', right)
+    
+	try:
         talker()
     except rospy.ROSInterruptException:
         pass
