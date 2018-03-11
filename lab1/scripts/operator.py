@@ -17,7 +17,7 @@ def getkey(prompt=""):
 		tty.setraw(sys.stdin.fileno())
 		key = sys.stdin.read(1)
 		if(key == '\x1a'):
-			sys.exit(0)
+			sys.exit(0)	
     finally:
         	termios.tcsetattr(fd, termios.TCSADRAIN, old)
     return key
@@ -26,7 +26,7 @@ def getkey(prompt=""):
 def talker():
     pub = rospy.Publisher('/turtle1/cmd_vel', Twist, queue_size=10)
     rospy.init_node('our_teleop', anonymous=True)
-    rate = rospy.Rate(10) 
+    rate = rospy.Rate(100) 
     while not rospy.is_shutdown():
 		key = getkey()
 		if (key == straight):
