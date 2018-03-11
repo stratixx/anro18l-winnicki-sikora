@@ -1,6 +1,41 @@
 import rospy
+while True:
+	try:
+		straight = str(raw_input("Podaj klawisz jazdy na wprost: "))
+		break
+	except ValueError:
+		print("Nieprawidlowy klawisz")
+while True:
+	try:
+		back = str(raw_input("Podaj klawisz jazdy do tylu: "))
+		break
+	except ValueError:
+		print("Nieprawidlowy klawisz: ")
 
-rospy.set_param('straight', 'w')
-rospy.set_param('back', 's')
-rospy.set_param('left', 'a')
-rospy.set_param('right', 'd')
+while True:
+	try:
+		left = str(raw_input("Podaj klawisz skretu w lewo: "))
+		break
+	except ValueError:
+		print("Nieprawidlowy klawisz: ")
+
+while True:
+	try:
+		right = str(raw_input("Podaj klawisz skretu w prawo: "))
+		break
+	except ValueError:
+		print("Nieprawidlowy klawisz: ")
+
+try:
+	rospy.set_param('straight', straight)
+	rospy.set_param('back', back)
+	rospy.set_param('left', left)
+	rospy.set_param('right', right)
+except Exception: 
+	print("Wystapil blad. Sprawdz czy roscore jest uruchomiony")
+else:
+	print("Nowe ustawienie sterowania.")
+	print('Wprost: {0}'.format(rospy.get_param('straight')))
+	print('Tyl: {0}'.format(rospy.get_param('back')))
+	print('Lewo: {0}'.format(rospy.get_param('left')))
+	print('Prawo: {0}'.format(rospy.get_param('right')))
