@@ -1,11 +1,8 @@
-#!/usr/bin/env python
-
 import rospy
-#import sys
+import sys
 from std_msgs.msg import String
 from geometry_msgs.msg import Twist
 from geometry_msgs.msg import Vector3
-
 # Pobranie parametrow z ewentualnym ustawieniem wartosci domyslnych
 def init_params():
 	if rospy.has_param('straight'):
