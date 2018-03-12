@@ -1,41 +1,60 @@
 #!/usr/bin/env python
 import rospy
+
+used_keys = []
+
 while True:
 	try:
 		straight = str(raw_input("Podaj klawisz jazdy na wprost: "))
-		if(len(straight)==1):
+		if(len(straight)==1 and used_keys.count(straight) == 0):
+			used_keys.append(straight)
 			break
-		else:
+		elif(len(straight)!=1):
 			print("Nieprawidlowa dlugosc, podaj jeden klawisz")
+		else:
+			print("Klawisz juz uzyty. Wybierz inny")
+
 	except ValueError:
 		print("Nieprawidlowy klawisz")
 while True:
 	try:
 		back = str(raw_input("Podaj klawisz jazdy do tylu: "))
-		if(len(back)==1):
+		if(len(back)==1 and used_keys.count(back) == 0):
+			used_keys.append(back)
 			break
-		else:
+		elif(len(back)!=1):
 			print("Nieprawidlowa dlugosc, podaj jeden klawisz")
+		else:
+			print("Klawisz juz uzyty. Wybierz inny")
+
 	except ValueError:
 		print("Nieprawidlowy klawisz: ")
 
 while True:
 	try:
 		left = str(raw_input("Podaj klawisz skretu w lewo: "))
-		if(len(left)==1):
+		if(len(left)==1 and used_keys.count(left) == 0):
+			used_keys.append(left)
 			break
-		else:
+		elif(len(left)!=1):
 			print("Nieprawidlowa dlugosc, podaj jeden klawisz")
+		else:
+			print("Klawisz juz uzyty. Wybierz inny")
+
 	except ValueError:
 		print("Nieprawidlowy klawisz: ")
 
 while True:
 	try:
 		right = str(raw_input("Podaj klawisz skretu w prawo: "))
-		if(len(right)==1):
+		if(len(right)==1 and used_keys.count(right) == 0):
+			used_keys.append(right)
 			break
-		else:
+		
+		elif(len(right)!=1):
 			print("Nieprawidlowa dlugosc, podaj jeden klawisz")
+		else:
+			print("Klawisz juz uzyty. Wybierz inny")
 	except ValueError:
 		print("Nieprawidlowy klawisz: ")
 
