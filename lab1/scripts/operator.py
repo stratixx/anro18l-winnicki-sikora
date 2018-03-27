@@ -8,18 +8,18 @@ from geometry_msgs.msg import Vector3
 # Nieblokujące pobranie wciśniętego klawisza, bez śladu w konsoli
 def getkey(prompt=""):
     import termios, sys, tty
-    fd = sys.stdin.fileno()
-    old = termios.tcgetattr(fd)
-    new = termios.tcgetattr(fd)
-    new[3] = new[3] & ~termios.ECHO          # lflags
-    try:
+    fd = sys.stdin.fileno() 
+    old = termios.tcgetattr(fd) # zapamiętaj poprzednie ustawienie terminala
+    new = termios.tcgetattr(fd) # nowe ustawienie terminala
+    new[3] = new[3] & ~termios.ECHO          
+    try: # pobierz klawisz
 		termios.tcsetattr(fd, termios.TCSADRAIN, new)
 		tty.setraw(sys.stdin.fileno())
 		key = sys.stdin.read(1)
 		if(key == '\x1a'):
 			sys.exit(0)	
     finally:
-        	termios.tcsetattr(fd, termios.TCSADRAIN, old)
+        	termios.tcsetattr(fd, termios.TCSADRAIN, old) # przywróc poprzednie ustawienia po pobraniu klawisza
     return key
 
 # Procedura publishera
@@ -27,27 +27,28 @@ def talker():
     pub = rospy.Publisher('/turtle1/cmd_vel', Twist, queue_size=10)
     rospy.init_node('our_teleop', anonymous=True)
     rate = rospy.Rate(100) 
-    while not rospy.is_shutdown():
+    while not rospy.is_shutdown(): # na podstawie klawisza, wygeneruj odpowiednie sterowanie
 		key = getkey()
-		if (key == straight):
+		if (key == straight): # prosto
         		vel = Twist(Vector3(2.0, 0, 0), Vector3(0.0,0,0))	
         		pub.publish(vel)
 
-		if (key == back):
+		if (key == back): # tył
         		vel = Twist(Vector3(-2.0, 0, 0), Vector3(0.0,0,0))	
        			pub.publish(vel)
 
-		if (key == left):
+		if (key == left): # lewo
        			vel = Twist(Vector3(0.0, 0, 0), Vector3(0.0,0,2.0))	
        			pub.publish(vel)
 
-		if (key == right):
+		if (key == right): # prawo
        			vel = Twist(Vector3(0.0, 0, 0), Vector3(0.0,0,-2.0))	
        			pub.publish(vel)
 
-       		rate.sleep()
+       		rate.sleep() # zachowaj odpowiednią częstotliwość nadawania
 
 # Procedura main, wczytanie klawuszy sterujących z serwera parametrów
+# Jeśli serwer nie zawiera parametrów, ustawia domyślne 
 if __name__ == '__main__':
 	#init params
 	if rospy.has_param('straight'):
@@ -71,11 +72,11 @@ if __name__ == '__main__':
 		right = 'd'
 
 
-
+	# czytaj sterowanie z klawiatury
 	print('Reading from keyboard')
 	print('---------------------')
 	print('Przod: {0}, Tyl: {1}, Lewo: {2}, Prawo: {3}'.format(straight,back,left,right))
-    
+    	
 	try:
        		talker()
     	except rospy.ROSInterruptException:
