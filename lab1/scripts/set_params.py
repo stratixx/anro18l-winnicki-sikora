@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 import rospy
 
-# klasa settera klawiszy sterujących
+# klasa settera klawiszy sterujacych
 class param_setter:
 	def __init__(self):
 		self.used_keys = [] # uzyte klawisze
@@ -25,7 +25,7 @@ class param_setter:
 
 setter = param_setter()
 
-# zapisanie nowych klawiszy sterujących do serwera parametrów
+# zapisanie nowych klawiszy sterujacych do serwera parametrow
 try:
 	rospy.set_param('straight', setter.get_param('straight'))
 	rospy.set_param('back', setter.get_param('back'))

@@ -5,11 +5,11 @@ from std_msgs.msg import String
 from geometry_msgs.msg import Twist
 from geometry_msgs.msg import Vector3
 
-# Nieblokujące pobranie wciśniętego klawisza, bez śladu w konsoli
+# Nieblokujace pobranie wcisnietego klawisza, bez sladu w konsoli
 def getkey(prompt=""):
     import termios, sys, tty
     fd = sys.stdin.fileno() 
-    old = termios.tcgetattr(fd) # zapamiętaj poprzednie ustawienie terminala
+    old = termios.tcgetattr(fd) # zapamietaj stare ustawienie terminala
     new = termios.tcgetattr(fd) # nowe ustawienie terminala
     new[3] = new[3] & ~termios.ECHO          
     try: # pobierz klawisz
@@ -19,7 +19,7 @@ def getkey(prompt=""):
 		if(key == '\x1a'):
 			sys.exit(0)	
     finally:
-        	termios.tcsetattr(fd, termios.TCSADRAIN, old) # przywróc poprzednie ustawienia po pobraniu klawisza
+        	termios.tcsetattr(fd, termios.TCSADRAIN, old) # przywroc poprzednie ustawienia po  pobraniu klawisza
     return key
 
 # Procedura publishera
@@ -33,7 +33,7 @@ def talker():
         		vel = Twist(Vector3(2.0, 0, 0), Vector3(0.0,0,0))	
         		pub.publish(vel)
 
-		if (key == back): # tył
+		if (key == back): # tyl
         		vel = Twist(Vector3(-2.0, 0, 0), Vector3(0.0,0,0))	
        			pub.publish(vel)
 
@@ -45,10 +45,10 @@ def talker():
        			vel = Twist(Vector3(0.0, 0, 0), Vector3(0.0,0,-2.0))	
        			pub.publish(vel)
 
-       		rate.sleep() # zachowaj odpowiednią częstotliwość nadawania
+       		rate.sleep() # zachowaj odpowiednia czestotliwosc nadawania
 
-# Procedura main, wczytanie klawuszy sterujących z serwera parametrów
-# Jeśli serwer nie zawiera parametrów, ustawia domyślne 
+# Procedura main, wczytanie klawuszy sterujacych z serwera parametrow
+# Jesli serwer nie zawiera parametrow, ustawia domyslne 
 if __name__ == '__main__':
 	#init params
 	if rospy.has_param('straight'):
