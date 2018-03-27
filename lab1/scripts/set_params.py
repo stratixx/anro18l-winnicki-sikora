@@ -4,20 +4,20 @@ import rospy
 # klasa settera klawiszy sterujących
 class param_setter:
 	def __init__(self):
-		self.used_keys = []
-		self.inputs = {'straight': "Podaj klawisz jazdy na wprost: ", 'back' : "Podaj klawisz jazdy do tylu: ", 'left' : "Podaj klawisz skretu w lewo: ", 'right' : "Podaj klawisz skretu w prawo: "}
+		self.used_keys = [] # uzyte klawisze
+		self.inputs = {'straight': "Podaj klawisz jazdy na wprost: ", 'back' : "Podaj klawisz jazdy do tylu: ", 'left' : "Podaj klawisz skretu w lewo: ", 'right' : "Podaj klawisz skretu w prawo: "} # polecenia wpisywania
 
 	def get_param(self, param):
 		while True:
 			try:
 				key = str(raw_input(self.inputs[param]))
-				if(len(key)==1 and self.used_keys.count(key) == 0):
+				if(len(key)==1 and self.used_keys.count(key) == 0): # sprawdz czy mozna uzyc klawisza
 					self.used_keys.append(key)
 					break
 				elif(len(key)!=1):
-					print("Nieprawidlowa dlugosc, podaj jeden klawisz")
+					print("Nieprawidlowa dlugosc, podaj jeden klawisz") # jesli wiecej niz jeden klawisz
 				else:
-					print("Klawisz juz uzyty. Wybierz inny")
+					print("Klawisz juz uzyty. Wybierz inny") # klawisz zajety
 		
 			except ValueError:
 				print("Nieprawidlowy klawisz")
@@ -34,7 +34,7 @@ try:
 	
 except Exception: 
 	print("Wystapil blad. Sprawdz czy roscore jest uruchomiony")
-else:
+else: # potwierdzenie ustawionych parametrow
 	print("Nowe ustawienie sterowania.")
 	print('Wprost: {0}'.format(rospy.get_param('straight')))
 	print('Tyl: {0}'.format(rospy.get_param('back')))
