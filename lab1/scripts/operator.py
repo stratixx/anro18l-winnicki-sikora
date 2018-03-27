@@ -5,7 +5,7 @@ from std_msgs.msg import String
 from geometry_msgs.msg import Twist
 from geometry_msgs.msg import Vector3
 
-
+# Nieblokujące pobranie wciśniętego klawisza, bez śladu w konsoli
 def getkey(prompt=""):
     import termios, sys, tty
     fd = sys.stdin.fileno()
@@ -22,7 +22,7 @@ def getkey(prompt=""):
         	termios.tcsetattr(fd, termios.TCSADRAIN, old)
     return key
 
-
+# Procedura publishera
 def talker():
     pub = rospy.Publisher('/turtle1/cmd_vel', Twist, queue_size=10)
     rospy.init_node('our_teleop', anonymous=True)
@@ -47,6 +47,7 @@ def talker():
 
        		rate.sleep()
 
+# Procedura main, wczytanie klawuszy sterujących z serwera parametrów
 if __name__ == '__main__':
 	#init params
 	if rospy.has_param('straight'):
