@@ -4,4 +4,9 @@
 
 	<node pkg="lab1" name="operator" type="operator.py" output="screen" launch-prefix="gnome-terminal --command"/>
 
+	<param name="straight" type="str" value="u"/>
+	<param name="back" type="str" value="j"/>
+	<param name="left" type="str" value="h"/>
+	<param name="right" type="str" value="k"/>
+	
 </launch>
