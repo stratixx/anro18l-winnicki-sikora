@@ -1,0 +1,51 @@
+<?xml version="1.0"?>
+<robot name="PatoBombelDaughter" xmlns:xacro="http://ros.org/wiki/xacro">
+
+  <xacro:property name="pi" value="3.1415" />
+
+  <material name="blue">
+    <color rgba="0 0 0.8 1"/>
+  </material>
+
+  <material name="black">
+    <color rgba="0 0 0 1"/>
+  </material>
+
+  <material name="white">
+    <color rgba="1 1 1 1"/>
+  </material>
+
+
+	<xacro:macro name="segmentMacro" params="name rpy xyz size">
+		<link name="${name}">
+		  <visual>
+		    <geometry>
+          <box size="${size}"/>
+		    </geometry>
+		    <material name="blue"/>
+		    <origin rpy="${rpy}" xyz="${xyz}"/>
+		  </visual>
+		</link>	
+  </xacro:macro>
+	
+	<xacro:macro name="jointMacro" params="parent child origin_xyz">
+    <joint name="${parent}_to_${child}_joint_fixed" type="fixed">
+      <parent link="${parent}"/>
+      <child link="${child}"/>
+      <origin xyz="${origin_xyz}"/>
+    </joint>
+  </xacro:macro>
+
+  <xacro:segmentMacro name="base" rpy="0 0 0" xyz="0 0 0.1" size="0.2 0.2 0.2"/>
+
+  <xacro:segmentMacro name="segment_1" rpy="0 0 0" xyz="0 0 ${0.45+0.01}" size="0.1 0.1 0.5"/>
+	<xacro:jointMacro parent="base" child="segment_1" origin_xyz="0 0 0.2"/>
+
+  <xacro:segmentMacro name="segment_2" rpy="0 0 0" xyz="0 0 ${0.95+0.02}" size="0.1 0.1 0.5"/>
+	<xacro:jointMacro parent="segment_1" child="segment_2" origin_xyz="0 0 0.90"/>
+
+  <xacro:segmentMacro name="gripper" rpy="0 0 0" xyz="0 0 ${1.25+0.03}" size="0.1 0.1 0.1"/>
+	<xacro:jointMacro parent="segment_2" child="gripper" origin_xyz="0 0 1.0"/>
+
+
+</robot>
