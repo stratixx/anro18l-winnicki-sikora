@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<robot name="PatoBombelDaughter" xmlns:xacro="http://ros.org/wiki/xacro">
+<robot name="PatoBombelSon" xmlns:xacro="http://ros.org/wiki/xacro">
 
 	<xacro:property name="pi" value="3.1415" />
 
@@ -28,8 +28,10 @@
 		</link>	
 	</xacro:macro>
 	
-	<xacro:macro name="jointFixed" params="parent child origin_xyz">
-		<joint name="${parent}_to_${child}_joint_fixed" type="fixed">
+	<xacro:macro name="jointContinuous" params="parent child origin_xyz axis_rpy axis_xyz">
+		<joint name="${parent}_to_${child}_joint_continuous" type="continuous">
+			<limit effort="1000.0" lower="0.0" upper="1.0" velocity="0.5"/>
+			<axis rpy="${axis_rpy}" xyz="${axis_xyz}"/>
 			<parent link="${parent}"/>
 			<child link="${child}"/>
 			<origin xyz="${origin_xyz}"/>
@@ -41,8 +43,8 @@
 	<xacro:segmentMacro name="segment_2" rpy="0 0 0" xyz="0 0 ${0.95+0.02}" size="0.1 0.1 0.5"/>
 	<xacro:segmentMacro name="gripper"   rpy="0 0 0" xyz="0 0 ${1.25+0.03}" size="0.1 0.1 0.1"/>
 
-	<xacro:jointFixed parent="base"      child="segment_1" origin_xyz="0 0 0.2" />
-	<xacro:jointFixed parent="segment_1" child="segment_2" origin_xyz="0 0 0.90"/>
-	<xacro:jointFixed parent="segment_2" child="gripper"   origin_xyz="0 0 1.0" />
+	<xacro:jointContinuous parent="base"      child="segment_1" origin_xyz="0 0 0.2"  axis_rpy="0 0 1" axis_xyz="0 0 0.2"/>
+	<xacro:jointContinuous parent="segment_1" child="segment_2" origin_xyz="0 0 0.90" axis_rpy="0 1 0" axis_xyz="0 0 1.1"/>
+	<xacro:jointContinuous parent="segment_2" child="gripper"   origin_xyz="0 0 1.5"  axis_rpy="1 0 0" axis_xyz="0 0 1.9"/>
 
 </robot>
