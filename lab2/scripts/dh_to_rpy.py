@@ -41,7 +41,7 @@ r33 = ca
 rot_matrix = [[r11, r12, r13], [r21, r22, r23], [r31, r32, r33]]
 
 #katy rpy 
-rpy = [math.atan2(r21, r11), math.atan2(-r31, math.sqrt(r32 ** 2 + r33 ** 2)), math.atan2(r32, r33)]
+rpy = [math.atan2(r32, r33), math.atan2(-r31, math.sqrt(r32 ** 2 + r33 ** 2)), math.atan2(r21, r11)]
 
 print("roll = {0}".format(rpy[0]))
 print("pitch = {0}".format(rpy[1]))
