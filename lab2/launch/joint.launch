@@ -1,0 +1,5 @@
+<launch>
+
+ <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher" />
+ <param name="joint_state_pub_needed" type="boolean" value="False"/>
+</launch>
