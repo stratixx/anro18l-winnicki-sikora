@@ -1,0 +1,16 @@
+<launch>
+
+  <arg name="model" default="$(find lab3)/urdf/modelMovable.xacro"/>
+  <arg name="gui" default="true" />
+  <arg name="rvizconfig" default="$(find urdf_tutorial)/rviz/urdf.rviz" />
+
+  <param name="robot_description" command="$(find xacro)/xacro --inorder $(arg model)" />
+  <param name="use_gui" value="$(arg gui)"/>
+
+  <param name="joint_state_pub_needed" type="boolean" value="True"/>  
+
+  <node name="rviz" pkg="rviz" type="rviz" args="-d $(arg rvizconfig)" required="true" />
+  <node name="robot_state_publisher" pkg="robot_state_publisher" type="state_publisher" /> 
+  <node name="silent_publisher" pkg="lab3" type="silent_publisher.py" />
+
+</launch>
