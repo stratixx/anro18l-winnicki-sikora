@@ -1,5 +1,7 @@
 #!/usr/bin/env python
 
+#czarek dzbanie nie sciagaj od nas XDDD
+
 import numpy as np
 import rospy
 
