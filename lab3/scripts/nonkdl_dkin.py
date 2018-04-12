@@ -4,12 +4,13 @@ import numpy as np
 import rospy
 
 from sensor_msgs.msg import JointState
+from geometry_msgs.msg import PoseStamped
 
 pi = np.pi
 
 global th1, th2, th3 # katy w stawach
 global a0, a1, a2, d1, d2, d3, al0, al1, al2 # parametry robota
-
+global pub # publisher
 # parametry robota
 a0 = 0
 a1 = 0
@@ -53,7 +54,9 @@ def TRANSZ(d):
 	return A
 
 
+
 def callback(data):
+	# pobierz wartosci katow w stawach
 	joint = []
 	joint.append(data.position[0])
 	joint.append(data.position[1])
@@ -70,20 +73,43 @@ def callback(data):
 		R2 = TRANSX(staw[0])
 		R3 = ROTZ(staw[3])
 		R4 = TRANSZ(staw[1])
-		R = R1*R2*R3*R4
+		R = np.dot(R1,R2)
+		R = np.dot(R, R3)
+		R = np.dot(R, R4)
 		joints.append(R)
 	
 	# obliczenie kinematyki prostej
-	KIN = joints[0]*joints[1]*joints[2]
+	KIN = np.dot(joints[0],joints[1])
+	KIN = np.dot(KIN, joints[2])
+	print('KIN')
 	print(KIN)
-
+	
+	# obliczenie pozycji koncowki	
+	pos_zero = np.array([0, 0, 0, 1]).transpose()
+	pos = np.dot(KIN, pos_zero)
+	print('POS')
+	print(pos)
+	
+	pose = PoseStamped()
+	pose.header.stamp = rospy.Time.now()
+	pose.header.frame_id = "nonkdl"
+	pose.pose.position.x = pos[0]
+	pose.pose.position.y = pos[1]
+	pose.pose.position.z = pos[2]
+	
+	pub.publish(pose)
+	print('Message')
+	print(pose)
 
 def listener():
 	rospy.init_node('NONKDL_DKIN', anonymous=False)
 	rospy.Subscriber('joint_states', JointState, callback)
+	global pub 	
+	pub = rospy.Publisher('nonkdl_pose', PoseStamped, queue_size=10)
 
 	#spin() simply keeps python from exiting until this node is stopped
 	rospy.spin()
+	
 
 if __name__ == '__main__':
 	listener()
