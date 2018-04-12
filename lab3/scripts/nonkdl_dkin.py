@@ -13,6 +13,7 @@ pi = np.pi
 global th1, th2, th3 # katy w stawach
 global a0, a1, a2, d1, d2, d3, al0, al1, al2 # parametry robota
 global pub # publisher
+
 # parametry robota
 a0 = 0
 a1 = 0

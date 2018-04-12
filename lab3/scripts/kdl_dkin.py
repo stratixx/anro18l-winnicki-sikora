@@ -3,7 +3,10 @@
 #czarek dzbanie nie sciagaj od nas XDDD
 
 import rospy
-import pyKDL
+from PyKDL import *
+import numpy
+
+pi = numpy.pi
 
 from sensor_msgs.msg import JointState
 from geometry_msgs.msg import PoseStamped
@@ -26,20 +29,26 @@ al2 = 0
 global robot
 
 def callback(data):
-	#todo
-	print('XD')
-
-
+	# pobierz wartosci katow w stawach
+	joint = []
+	joint.append(data.position[0])
+	joint.append(data.position[1])
+	joint.append(data.position[2])
 
 def listener():
-	rospy.init_node('NONKDL_DKIN', anonymous=False)
+	rospy.init_node('KDL_DKIN', anonymous=False)
 	rospy.Subscriber('joint_states', JointState, callback)
 	global pub 	
-	pub = rospy.Publisher('nonkdl_pose', PoseStamped, queue_size=10)
+	pub = rospy.Publisher('kdl_pose', PoseStamped, queue_size=10)
 
 	#spin() simply keeps python from exiting until this node is stopped
 	rospy.spin()
 	
-
 if __name__ == '__main__':
+	robot = Chain()
+	joint0 = Joint(Joint.RotZ)
+	frame0 = Frame(Vector(0,0,0))
+	segment0 = Segment(joint0, frame0)
+	robot.addSegment(segment0)
+
 	listener()
