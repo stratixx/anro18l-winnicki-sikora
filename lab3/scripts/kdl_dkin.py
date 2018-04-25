@@ -47,30 +47,36 @@ def callback(data):
 
 	robot = PyKDL.Chain()
 
-	joint0 = PyKDL.Joint(Joint.RotZ)
-	frame0 = createFrame(PyKDL.Frame(Vector(0,0,0)), a0, d1, al0, joint[0])
+	joint0 = PyKDL.Joint(PyKDL.Joint.RotZ)
+	frame0 = createFrame(PyKDL.Frame(PyKDL.Vector(0,0,0)), a0, d1, al0, joint[0])
 	segment0 = PyKDL.Segment(joint0, frame0)
 	robot.addSegment(segment0)
 
-	joint1 = PyKDL.Joint(Joint.RotZ)
+	joint1 = PyKDL.Joint(PyKDL.Joint.RotZ)
 	frame1 = createFrame(frame0, a1, d2, al1, joint[1])
 	segment1 = PyKDL.Segment(joint1, frame1)
 	robot.addSegment(segment1)
 
-	joint2 = PyKDL.Joint(Joint.RotZ)
+	joint2 = PyKDL.Joint(PyKDL.Joint.RotZ)
 	frame2 = createFrame(frame1, a2, d3, al2, joint[2])
 	segment2 = PyKDL.Segment(joint2, frame2)
 	robot.addSegment(segment1)
 	 
-	solver = PyKDL.ChainFkSolverPos_recursive
-	pos = solver.JntToCart()
+	solver = PyKDL.ChainFkSolverPos_recursive(robot)
+	q = PyKDL.JntArray(robot.getNrOfJoints)
+	q[0] = joint[0]
+	q[1] = joint[1]
+	q[2] = joint[2]
+
+	wynik = PyKDL.Frame()
+	boo = solver.JntToCArt(q, wynik)
 
 	pose = PoseStamped()
 	pose.header.stamp = rospy.Time.now()
 	pose.header.frame_id = "kdl"
-	pose.pose.position.x = pos[0]
-	pose.pose.position.y = pos[1]
-	pose.pose.position.z = pos[2]
+	pose.pose.position.x = wynik.p.x()
+	pose.pose.position.y = wynik.p.y()
+	pose.pose.position.z = wynik.p.z()
 	
 	pub.publish(pose)
 	print('Message')
