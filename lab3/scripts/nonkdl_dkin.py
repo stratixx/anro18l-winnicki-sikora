@@ -4,9 +4,11 @@
 
 import numpy as np
 import rospy
+import math
 
 from sensor_msgs.msg import JointState
 from geometry_msgs.msg import PoseStamped
+from tf.transformations import quaternion_from_euler
 
 pi = np.pi
 
@@ -14,18 +16,19 @@ global th1, th2, th3 # katy w stawach
 global a0, a1, a2, d1, d2, d3, al0, al1, al2 # parametry robota
 global pub # publisher
 
+#wysokosc bazy
+base_height=0.2
+
 # parametry robota
 a0 = 0
 a1 = 0
 a2 = 0.5
-d1 = 0
+d1 = base_height
 d2 = 0 
 d3 = 0
 al0 = 0
 al1 = -pi/2
 al2 = 0
-#wysokosc bazy
-base_height=0.2
 
 global robot
 
@@ -84,8 +87,9 @@ def callback(data):
 		joints.append(R)
 	
 	# obliczenie kinematyki prostej
-	KIN = np.dot(joints[0],joints[1])
-	KIN = np.dot(KIN, joints[2])
+	KIN0_1 = np.dot(joints[0],joints[1])
+	KIN1_2 = np.dot(KIN0_1, joints[2])
+	KIN = KIN1_2
 	print('KIN')
 	print(KIN)
 	
@@ -98,13 +102,33 @@ def callback(data):
 	pose = PoseStamped()
 	pose.header.stamp = rospy.Time.now()
 	pose.header.frame_id = "base_link"
-	pose.pose.position.x = pos[0]
-	pose.pose.position.y = pos[1]
-	pose.pose.position.z = pos[2]+base_height
+
+	# przesuniecie poczatku wektora nad baze	
+	pose.pose.position.x = np.take(KIN0_1, [3])
+	pose.pose.position.y = np.take(KIN0_1, [7])
+	pose.pose.position.z = np.take(KIN0_1, [11])
+	
+	#obliczenie katow rpy
+	r11 = np.take(KIN0_1, [0])
+	r21 = np.take(KIN0_1, [4])
+	r31 = np.take(KIN0_1, [8])
+	r32 = np.take(KIN0_1, [9])
+	r33 = np.take(KIN0_1, [10])
+					
+	r = math.atan2(r32, r33)
+	p = math.atan2(-r31, math.sqrt(r32 ** 2 + r33 ** 2))
+	y = math.atan2(r21, r11)
+
+	quat = quaternion_from_euler (r, p,y)
+	pose.pose.orientation.x = quat[0]
+	pose.pose.orientation.y = quat[1]
+	pose.pose.orientation.z = quat[2]
+	pose.pose.orientation.w = quat[3]
+	
 	
 	pub.publish(pose)
-	print('Message')
-	print(pose)
+	#print('Message')
+	#print(pose)
 
 def listener():
 	rospy.init_node('NONKDL_DKIN', anonymous=False)
