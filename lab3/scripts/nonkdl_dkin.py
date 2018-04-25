@@ -95,7 +95,7 @@ def callback(data):
 	
 	pose = PoseStamped()
 	pose.header.stamp = rospy.Time.now()
-	pose.header.frame_id = "nonkdl"
+	pose.header.frame_id = "base_link"
 	pose.pose.position.x = pos[0]
 	pose.pose.position.y = pos[1]
 	pose.pose.position.z = pos[2]
