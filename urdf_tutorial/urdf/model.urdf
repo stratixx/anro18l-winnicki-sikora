@@ -1,0 +1,58 @@
+<?xml version="1.0"?>
+<robot name="PatoBombel">
+	
+	<material name="blue">
+    <color rgba="0 0 0.8 1"/>
+  </material>
+  <material name="black">
+    <color rgba="0 0 0 1"/>
+  </material>
+  <material name="white">
+    <color rgba="1 1 1 1"/>
+  </material>
+
+
+  <link name="baza">
+    <visual>
+      <geometry>
+        <cylinder length="0.2" radius="0.2"/>
+      </geometry>
+      <material name="blue"/>
+      <origin rpy="0 0 0" xyz="0 0 0.1"/>
+    </visual>
+  </link>
+
+  <link name="czlon1">
+    <visual>
+      <geometry>
+        <box size="0.1 0.1 0.5"/>
+      </geometry>
+      <origin rpy="0 0 0" xyz="0 0 0.45"/>
+      <material name="white"/>
+    </visual>
+  </link>
+	
+  <joint name="baza_do_czlon1" type="fixed">
+    <parent link="baza"/>
+    <child link="czlon1"/>
+    <origin xyz="0 0 0.2"/>
+  </joint>
+
+  <link name="czlon2">
+    <visual>
+      <geometry>
+        <box size="0.1 0.1 0.5"/>
+      </geometry>
+      <origin rpy="0 0 0" xyz="0 0 0.9"/>
+      <material name="white"/>
+    </visual>
+  </link>
+	
+  <joint name="czlon1_do_czlon2" type="fixed">
+    <parent link="czlon1"/>
+    <child link="czlon2"/>
+    <origin xyz="0 0 0.90"/>
+  </joint>
+	
+
+</robot>
