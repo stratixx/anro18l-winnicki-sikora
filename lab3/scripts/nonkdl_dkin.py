@@ -24,6 +24,8 @@ d3 = 0
 al0 = 0
 al1 = -pi/2
 al2 = 0
+#wysokosc bazy
+base_height=0.2
 
 global robot
 
@@ -98,7 +100,7 @@ def callback(data):
 	pose.header.frame_id = "base_link"
 	pose.pose.position.x = pos[0]
 	pose.pose.position.y = pos[1]
-	pose.pose.position.z = pos[2]
+	pose.pose.position.z = pos[2]+base_height
 	
 	pub.publish(pose)
 	print('Message')
