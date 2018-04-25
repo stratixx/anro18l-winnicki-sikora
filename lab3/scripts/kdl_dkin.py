@@ -1,8 +1,5 @@
 #!/usr/bin/env python
 
-import roslib
-roslib.load_manifest('lab3')
-
 import rospy
 import PyKDL
 import numpy
@@ -45,6 +42,18 @@ def callback(data):
 	joint.append(data.position[1])
 	joint.append(data.position[2])
 
+	if joint[0] > 3.14 or joint[0] < -3.14:
+		rospy.logerr("Zly kat")
+		return
+	
+	if joint[1] > 0 or joint[1] < -1.54:
+		rospy.logerr("Zly kat")
+		return
+	
+	if joint[2] < 0 or joint[2] > 1.54:
+		rospy.logerr("Zly kat")
+		return
+
 	robot = PyKDL.Chain()
 
 	joint0 = PyKDL.Joint(PyKDL.Joint.RotZ)
@@ -63,13 +72,13 @@ def callback(data):
 	robot.addSegment(segment1)
 	 
 	solver = PyKDL.ChainFkSolverPos_recursive(robot)
-	q = PyKDL.JntArray(robot.getNrOfJoints)
+	q = PyKDL.JntArray(robot.getNrOfJoints())
 	q[0] = joint[0]
 	q[1] = joint[1]
 	q[2] = joint[2]
 
 	wynik = PyKDL.Frame()
-	boo = solver.JntToCArt(q, wynik)
+	boo = solver.JntToCart(q, wynik)
 
 	pose = PoseStamped()
 	pose.header.stamp = rospy.Time.now()

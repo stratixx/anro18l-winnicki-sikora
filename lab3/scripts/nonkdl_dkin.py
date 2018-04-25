@@ -70,6 +70,19 @@ def callback(data):
 	robot[0][3] = joint[0]
 	robot[1][3] = joint[1]
 	robot[2][3] = joint[2]
+	
+	if joint[0] > 3.14 or joint[0] < -3.14:
+		rospy.logerr("Zly kat")
+		return
+	
+	if joint[1] > 0 or joint[1] < -1.54:
+		rospy.logerr("Zly kat")
+		return
+	
+	if joint[2] < 0 or joint[2] > 1.54:
+		rospy.logerr("Zly kat")
+		return
+	
 	joints = []
 	
 	# obliczenie macierzy zlacz
