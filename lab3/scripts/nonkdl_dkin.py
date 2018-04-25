@@ -117,16 +117,16 @@ def callback(data):
 	pose.header.frame_id = "base_link"
 
 	# przesuniecie poczatku wektora nad baze	
-	pose.pose.position.x = np.take(KIN0_1, [3])
-	pose.pose.position.y = np.take(KIN0_1, [7])
-	pose.pose.position.z = np.take(KIN0_1, [11])
+	pose.pose.position.x = np.take(KIN, [3])
+	pose.pose.position.y = np.take(KIN, [7])
+	pose.pose.position.z = np.take(KIN, [11])
 	
 	#obliczenie katow rpy
-	r11 = np.take(KIN0_1, [0])
-	r21 = np.take(KIN0_1, [4])
-	r31 = np.take(KIN0_1, [8])
-	r32 = np.take(KIN0_1, [9])
-	r33 = np.take(KIN0_1, [10])
+	r11 = np.take(KIN, [0])
+	r21 = np.take(KIN, [4])
+	r31 = np.take(KIN, [8])
+	r32 = np.take(KIN, [9])
+	r33 = np.take(KIN, [10])
 					
 	r = math.atan2(r32, r33)
 	p = math.atan2(-r31, math.sqrt(r32 ** 2 + r33 ** 2))
