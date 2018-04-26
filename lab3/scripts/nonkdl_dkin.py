@@ -17,18 +17,18 @@ global a0, a1, a2, d1, d2, d3, al0, al1, al2 # parametry robota
 global pub # publisher
 
 #wysokosc bazy
-base_height=0.2
+base_height=rospy.get_param('base_height')
 
 # parametry robota
-a0 = 0
-a1 = 0
-a2 = 0.5
-d1 = base_height
-d2 = 0 
-d3 = 0
-al0 = 0
-al1 = -pi/2
-al2 = 0
+a0 = rospy.get_param('a0')
+a1 = rospy.get_param('a1')
+a2 = rospy.get_param('a2')
+d1 = rospy.get_param('d1') + base_height
+d2 = rospy.get_param('d2') 
+d3 = rospy.get_param('d3')
+al0 = rospy.get_param('al0')
+al1 = rospy.get_param('al1')
+al2 = rospy.get_param('al2')
 
 global robot
 

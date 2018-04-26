@@ -13,16 +13,18 @@ global th1, th2, th3 # katy w stawach
 global a0, a1, a2, d1, d2, d3, al0, al1, al2 # parametry robota
 global pub # publisher
 
+
 # parametry robota
-a0 = 0
-a1 = 0
-a2 = 0.5
-d1 = 0
-d2 = 0 
-d3 = 0
-al0 = 0
-al1 = -pi/2
-al2 = 0
+base_height = rospy.get_param('base_height')
+a0 = rospy.get_param('a0')
+a1 = rospy.get_param('a1')
+a2 = rospy.get_param('a2')
+d1 = rospy.get_param('d1')
+d2 = rospy.get_param('d2') 
+d3 = rospy.get_param('d3')
+al0 = rospy.get_param('al0')
+al1 = rospy.get_param('al1')
+al2 = rospy.get_param('al2')
 
 global robot
 
@@ -58,7 +60,7 @@ def callback(data):
 
 	joint0 = PyKDL.Joint(PyKDL.Joint.RotZ)
  	#frame0 = PyKDL.Frame.DH(a0, al0, d1, joint[0])
-	frame0 = createFrame(PyKDL.Frame(PyKDL.Vector(0,0,0.2)), a0, d1, al0, joint[0])
+	frame0 = createFrame(PyKDL.Frame(PyKDL.Vector(0,0, base_height)), a0, d1, al0, joint[0])
 	segment0 = PyKDL.Segment(joint0, frame0)
 	robot.addSegment(segment0)
 
