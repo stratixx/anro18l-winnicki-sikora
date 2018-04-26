@@ -17,7 +17,7 @@ global a0, a1, a2, d1, d2, d3, al0, al1, al2 # parametry robota
 global pub # publisher
 
 #wysokosc bazy
-base_height=0.2
+base_height=0.0
 
 # parametry robota
 a0 = 0
@@ -103,15 +103,12 @@ def callback(data):
 	KIN0_1 = np.dot(joints[0],joints[1])
 	KIN1_2 = np.dot(KIN0_1, joints[2])
 	KIN = KIN1_2
-	print('KIN')
-	print(KIN)
 	
 	# obliczenie pozycji koncowki	
 	pos_zero = np.array([0, 0, 0, 1]).transpose()
 	pos = np.dot(KIN, pos_zero)
-	print('POS')
-	print(pos)
 	
+
 	pose = PoseStamped()
 	pose.header.stamp = rospy.Time.now()
 	pose.header.frame_id = "base_link"
@@ -141,7 +138,7 @@ def callback(data):
 	
 	pub.publish(pose)
 	#print('Message')
-	#print(pose)
+	print(pose)
 
 def listener():
 	rospy.init_node('NONKDL_DKIN', anonymous=False)
