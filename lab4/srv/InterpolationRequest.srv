@@ -1,0 +1,5 @@
+int8 joint
+float64 angle
+float64 time
+---
+string state
