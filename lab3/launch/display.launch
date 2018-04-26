@@ -3,21 +3,27 @@
   <arg name="model" default="$(find lab3)/urdf/modelMovable.xacro"/>
   <arg name="gui" default="true" />
   <arg name="rvizconfig" default="$(find lab3)/config.rviz" />
+  <arg name="a2" default="0.4"/>
+  <arg name="base_height" default="0.3"/>
+  <arg name="gripper" default="0.1"/>
 
-  <param name="robot_description" command="$(find xacro)/xacro --inorder $(arg model)" />
+
+
+  <param name="robot_description" command="$(find xacro)/xacro --inorder $(arg model) a2:=$(arg a2)  base_size:=$(arg base_height) gripper_size:=$(arg gripper)" />
   <param name="use_gui" value="$(arg gui)"/>
 
   <param name="joint_state_pub_needed" type="boolean" value="True"/>  
   <param name="a0" type="double" value="0"/> 
   <param name="a1" type="double" value="0"/> 
-  <param name="a2" type="double" value="0.5"/>
+  <param name="a2" type="double" value="$(arg a2)"/>
   <param name="al0" type="double" value="0"/> 
   <param name="al1" type="double" value="-1.57"/> 
   <param name="al2" type="double" value="0"/>   
   <param name="d1" type="double" value="0"/> 
   <param name="d2" type="double" value="0"/>
   <param name="d3" type="double" value="0"/>   
-  <param name="base_height" type="double" value="0.2"/>
+  <param name="base_height" type="double" value="$(arg base_height)"/>
+  <param name="gripper" type="double" value="$(arg gripper)"/> 
 
   <node name="rviz" pkg="rviz" type="rviz" args="-d $(arg rvizconfig)" required="true" />
   <node name="robot_state_publisher" pkg="robot_state_publisher" type="state_publisher" /> 

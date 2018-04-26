@@ -18,14 +18,15 @@ global pub # publisher
 
 #wysokosc bazy
 base_height=rospy.get_param('base_height')
+gripper=rospy.get_param('gripper')
 
 # parametry robota
 a0 = rospy.get_param('a0')
 a1 = rospy.get_param('a1')
-a2 = rospy.get_param('a2')
+a2 = rospy.get_param('a2') 
 d1 = rospy.get_param('d1') + base_height
 d2 = rospy.get_param('d2') 
-d3 = rospy.get_param('d3')
+d3 = rospy.get_param('d3') 
 al0 = rospy.get_param('al0')
 al1 = rospy.get_param('al1')
 al2 = rospy.get_param('al2')
@@ -38,10 +39,13 @@ robot = []
 staw1 = [a0, d1, al0, 0]
 staw2 = [a1, d2, al1, 0]
 staw3 = [a2, d3, al2, 0]
+staw4 = [gripper, 0, 0, 0]
 
 robot.append(staw1)
 robot.append(staw2)
 robot.append(staw3)
+robot.append(staw4)
+
 
 
 
@@ -78,7 +82,7 @@ def callback(data):
 		rospy.logerr("Zly kat")
 		return
 	
-	if joint[1] > 0 or joint[1] < -1.54:
+	if joint[1] > 0 or joint[1] < -1:
 		rospy.logerr("Zly kat")
 		return
 	
@@ -102,7 +106,8 @@ def callback(data):
 	# obliczenie kinematyki prostej
 	KIN0_1 = np.dot(joints[0],joints[1])
 	KIN1_2 = np.dot(KIN0_1, joints[2])
-	KIN = KIN1_2
+	KIN2_3 = np.dot(KIN1_2, joints[3])
+	KIN = KIN2_3
 	
 	# obliczenie pozycji koncowki	
 	pos_zero = np.array([0, 0, 0, 1]).transpose()
