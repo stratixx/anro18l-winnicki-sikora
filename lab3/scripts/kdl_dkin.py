@@ -58,7 +58,7 @@ def callback(data):
 
 	joint0 = PyKDL.Joint(PyKDL.Joint.RotZ)
  	#frame0 = PyKDL.Frame.DH(a0, al0, d1, joint[0])
-	frame0 = createFrame(PyKDL.Frame(PyKDL.Vector(0,0,0)), a0, d1, al0, joint[0])
+	frame0 = createFrame(PyKDL.Frame(PyKDL.Vector(0,0,0.2)), a0, d1, al0, joint[0])
 	segment0 = PyKDL.Segment(joint0, frame0)
 	robot.addSegment(segment0)
 
@@ -85,7 +85,7 @@ def callback(data):
 
 	pose = PoseStamped()
 	pose.header.stamp = rospy.Time.now()
-	pose.header.frame_id = "kdl"
+	pose.header.frame_id = "base_link"
 	pose.pose.position.x = wynik.p.x()
 	pose.pose.position.y = wynik.p.y()
 	pose.pose.position.z = wynik.p.z()

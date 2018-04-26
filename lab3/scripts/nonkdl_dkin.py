@@ -17,7 +17,7 @@ global a0, a1, a2, d1, d2, d3, al0, al1, al2 # parametry robota
 global pub # publisher
 
 #wysokosc bazy
-base_height=0.0
+base_height=0.2
 
 # parametry robota
 a0 = 0
