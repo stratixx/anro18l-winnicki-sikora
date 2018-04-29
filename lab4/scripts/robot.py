@@ -2,6 +2,7 @@
 import rospy
 import numpy as np
 from geometry_msgs.msg import PoseStamped
+from sensor_msgs.msg import JointState
 import math
 from tf.transformations import quaternion_from_euler
 
@@ -39,6 +40,9 @@ class Robot:
 		self.al2 = rospy.get_param('al2')
 
 
+	def set_angles(self, ang0, ang1, ang2):
+		self.joint_position = [ang0, ang1, ang2]
+	
 	def ROTZ(self,theta):
 		A = np.array([[np.cos(theta), -np.sin(theta), 0, 0], [np.sin(theta), np.cos(theta), 0, 0], [0, 0, 1, 0], [0, 0, 0, 1]])
 		return A
@@ -55,7 +59,11 @@ class Robot:
 		A = np.array([[1, 0, 0, 0], [0, 1, 0, 0], [0, 0, 1, d], [0, 0, 0, 1]])
 		return A
 
-	def createPose(self, ang0, ang1, ang2):
+	def get_pose_stamped(self):
+		self.joints[0][3] = ang0
+		self.joints[1][3] = ang1
+		self.joints[2][3] = ang2
+
 		#sprawdzenie poprawnosci katow
 		if ang0 > 3.14 or ang0 < -3.14:
 			rospy.logerr("Zly kat")
@@ -123,3 +131,12 @@ class Robot:
 	
 		return pose
 
+	def get_joint_state(self):		
+		state = JointState()
+		state.name = ['base_link_to_segment_1_joint_continuous', 'segment_1_to_segment_2_continuous', 'segment_2_to_gripper_joint_continuous']
+		state.position = self.joint_position
+		state.velocity = []
+		state.effort = []
+		state.header.stamp = rospy.Time.now()
+		state.header.frame_id = ''
+		return state

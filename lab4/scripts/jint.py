@@ -19,9 +19,14 @@ global pub # publisher
 # obiekt robota
 robot = robot.Robot()
 
-def basic_interpolation(x0, x1, t1, t):
+def linear_interpolation(x0, x1, t1, t):
 	a = (x1 - x0)/(t1)	
 	return x0 + a*t 
+
+def interpole(type, x0, x1, t1, t):
+	if type == 'linear':
+		return linear_interpolation(x0, x1, t1, t)
+
 
 def handle_interpolation_request(req):
 	# sprawdzenie poprawnosci zadania
@@ -48,22 +53,23 @@ def handle_interpolation_request(req):
 	
 	r = rospy.Rate(fps)
 	k = 0 # poczatkowy czas dyskretny
-	while k < samples:
-		dst0 = basic_interpolation(x[0], goal[0], samples, k)
-		dst1 = basic_interpolation(x[1], goal[1], samples, k)
-		dst2 = basic_interpolation(x[2], goal[2], samples, k)
-		pose = robot.createPose(dst0, dst1, dst2)
-		pub = rospy.Publisher('joint_states', PoseStamped, queue_size = 10)
-		pub.publish(pose)
+	while k <= samples:
+		ang0 = interpole(req.interpolation_type, x[0], goal[0], samples, k)
+		ang1 = interpole(req.interpolation_type, x[1], goal[1], samples, k)
+		ang2 = interpole(req.interpolation_type, x[2], goal[2], samples, k)
+		robot.set_angles(ang0, ang1, ang2)
+		state = robot.get_joint_state()
+		pub = rospy.Publisher('joint_states', JointState, queue_size = 10)
+		pub.publish(state)
 		k = k + 1
+		print(state)
 		print(k)
-		print(dst0)
-		print(dst1)
-		print(dst2)
+		print(ang0)
+		print(ang1)
+		print(ang2)
 		print('---')
 		r.sleep()
 				
-
 	return InterpolationRequestResponse('done')
 
 def jint_server():
