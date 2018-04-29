@@ -1,3 +1,0 @@
-<launch>
- <node name="kdl_dkin" pkg="lab3" type="kdl_dkin.py" />
-</launch>

@@ -1,5 +1,7 @@
-int8 joint
-float64 angle
+float64 angle0
+float64 angle1
+float64 angle2
 float64 time
+string interpolation_type
 ---
 string state

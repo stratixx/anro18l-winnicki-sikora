@@ -7,8 +7,6 @@
   <arg name="base_height" default="0.3"/>
   <arg name="gripper" default="0.1"/>
 
-
-
   <param name="robot_description" command="$(find xacro)/xacro --inorder $(arg model) a2:=$(arg a2)  base_size:=$(arg base_height) gripper_size:=$(arg gripper)" />
   <param name="use_gui" value="$(arg gui)"/>
 
@@ -25,8 +23,6 @@
   <param name="base_height" type="double" value="$(arg base_height)"/>
   <param name="gripper" type="double" value="$(arg gripper)"/> 
 
-  <node name="rviz" pkg="rviz" type="rviz" args="-d $(arg rvizconfig)" required="true" />
-  <node name="robot_state_publisher" pkg="robot_state_publisher" type="state_publisher" /> 
-  <node name="silent_publisher" pkg="lab3" type="silent_publisher.py" />
+  <node name="jint" pkg="lab4" type="jint.py" />
 
 </launch>
