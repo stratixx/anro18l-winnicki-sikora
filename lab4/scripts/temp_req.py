@@ -24,7 +24,7 @@ try:
 			    float(sys.argv[2]), 
 			    float(sys.argv[3]),
 		   	    float(sys.argv[4]),
-			   'linear')
+			   'quad_spline')
 except rospy.ServiceException as exc:
 	print("Service did not process request: " + str(exc))
 
