@@ -12,16 +12,18 @@ from lab4.srv import *
 import robot
 
 pi = np.pi
-fps = 30
+global fps
+fps = rospy.get_param('fps')
 
 global pub # publisher
+global robot
 
-# obiekt robota
-robot = robot.Robot()
 
 def linear_interpolation(x0, x1, t1, t):
 	a = (x1 - x0)/(t1)	
 	return x0 + a*t 
+
+
 
 def interpole(type, x0, x1, t1, t):
 	if type == 'linear':
@@ -44,6 +46,20 @@ def handle_interpolation_request(req):
 	goal[0] = req.angle0
 	goal[1] = req.angle1
 	goal[2] = req.angle2
+
+
+	#sprawdzenie poprawnosci katow
+	if goal[0] > 3.14 or goal[0] < -3.14:
+		rospy.logerr("Zly kat")
+		return InterpolationRequestResponse("Invalid goal for joint0")
+	
+	if goal[1] > 0 or goal[1] < -1.54:
+		rospy.logerr("Zly kat")
+		return InterpolationRequestResponse("Invalid goal for joint1")
+	
+	if goal[2] < 0 or goal[2] > 1.54:
+		rospy.logerr("Zly kat")
+		return InterpolationRequestResponse("Invalid goal for joint2")
 	 
 	# katy poczatkowe
 	x = [0.0, 0.0, 0.0]
@@ -58,16 +74,16 @@ def handle_interpolation_request(req):
 		ang1 = interpole(req.interpolation_type, x[1], goal[1], samples, k)
 		ang2 = interpole(req.interpolation_type, x[2], goal[2], samples, k)
 		robot.set_angles(ang0, ang1, ang2)
-		state = robot.get_joint_state()
+		state = robot.get_joint_state(fps)
 		pub = rospy.Publisher('joint_states', JointState, queue_size = 10)
 		pub.publish(state)
 		k = k + 1
 		print(state)
-		print(k)
-		print(ang0)
-		print(ang1)
-		print(ang2)
-		print('---')
+		#print(k)
+		#print(ang0)
+		#print(ang1)
+		#print(ang2)
+		#print('---')
 		r.sleep()
 				
 	return InterpolationRequestResponse('done')
@@ -75,8 +91,13 @@ def handle_interpolation_request(req):
 def jint_server():
 	rospy.init_node('jint')
 	s = rospy.Service('jint', InterpolationRequest, handle_interpolation_request)
-	pub = rospy.Publisher('joint_states', PoseStamped, queue_size = 10)
+	pub = rospy.Publisher('/joint_states', JointState, queue_size = 10)	
+	init_state = robot.get_joint_state(0)	
+	rospy.sleep(3)
+	pub.publish(init_state)
 	rospy.spin()
 
 if __name__ == "__main__":
+	# obiekt robota
+	robot = robot.Robot()
 	jint_server()

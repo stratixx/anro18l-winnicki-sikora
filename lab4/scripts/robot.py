@@ -22,6 +22,7 @@ class Robot:
 		self.joints.append(staw4)
 
 		self.joint_position = [0.0, 0.0, 0.0]
+		self.prev_jnt_pos = [0.0, 0.0, 0.0]
 
 	def get_params(self):
 		#wysokosc bazy
@@ -41,6 +42,7 @@ class Robot:
 
 
 	def set_angles(self, ang0, ang1, ang2):
+		self.prev_jnt_pos = self.joint_position
 		self.joint_position = [ang0, ang1, ang2]
 	
 	def ROTZ(self,theta):
@@ -67,15 +69,15 @@ class Robot:
 		#sprawdzenie poprawnosci katow
 		if ang0 > 3.14 or ang0 < -3.14:
 			rospy.logerr("Zly kat")
-			return
+			raise Exception
 	
 		if ang1 > 0 or ang1 < -1.54:
 			rospy.logerr("Zly kat")
-			return
+			raise Exception
 	
 		if ang2 < 0 or ang2 > 1.54:
 			rospy.logerr("Zly kat")
-			return
+			raise Exception			
 
 		#tablica macierzy
 		matrices = []
@@ -131,12 +133,15 @@ class Robot:
 	
 		return pose
 
-	def get_joint_state(self):		
+	def get_joint_state(self, fps):		
 		state = JointState()
-		state.name = ['base_link_to_segment_1_joint_continuous', 'segment_1_to_segment_2_continuous', 'segment_2_to_gripper_joint_continuous']
+		state.name = ['base_link_to_segment_1_joint_continuous', 'segment_1_to_segment_2_joint_continuous', 'segment_2_to_gripper_joint_continuous']
 		state.position = self.joint_position
-		state.velocity = []
+		state.velocity = [0.0, 0.0, 0.0]
+		state.velocity[0] = (self.joint_position[0] - self.prev_jnt_pos[0])*fps
+		state.velocity[1] = (self.joint_position[1] - self.prev_jnt_pos[1])*fps
+		state.velocity[2] = (self.joint_position[2] - self.prev_jnt_pos[2])*fps
 		state.effort = []
 		state.header.stamp = rospy.Time.now()
-		state.header.frame_id = ''
+		state.header.frame_id = 'base_link'
 		return state
