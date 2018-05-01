@@ -4,7 +4,7 @@
 import sys
 from std_msgs.msg import String
 try:
-	if len(sys.argv) != 5:
+	if len(sys.argv) != 6:
 		raise Exception
 
 except Exception:
@@ -24,7 +24,7 @@ try:
 			    float(sys.argv[2]), 
 			    float(sys.argv[3]),
 		   	    float(sys.argv[4]),
-			   'quad_spline')
+			    str(sys.argv[5]))
 except rospy.ServiceException as exc:
 	print("Service did not process request: " + str(exc))
 
