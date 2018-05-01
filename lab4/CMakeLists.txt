@@ -10,7 +10,8 @@ find_package(catkin REQUIRED COMPONENTS
 
 add_service_files(
 	FILES
-	InterpolationRequest.srv
+	JINTRequest.srv
+	OINTRequest.srv
 )
 
 generate_messages(
