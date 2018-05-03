@@ -16,16 +16,18 @@ global fps
 fps = rospy.get_param('fps')
 
 global pub # publisher
-global act_posiition
+global act_position
 global act_orientation
 
 
 def create_pose():
+	global act_position
+	global act_orientation
 	pose = PoseStamped()
 
 	#header
 	pose.header.stamp = rospy.Time.now()
-	pose.header.frame_id = ''
+	pose.header.frame_id = 'base_link'
 
 	#pose.position
 	pose.pose.position.x = act_position[0]
@@ -41,6 +43,8 @@ def create_pose():
 	return pose
 
 def handle_interpolation_request(req):
+	global act_position
+	global act_orientation
 	# sprawdzenie poprawnosci zadania
 	int_time = req.time
 	if int_time <= 0:
@@ -66,15 +70,15 @@ def handle_interpolation_request(req):
 	#sprawdzenie poprawnosci katow
 	if orien_goal[0] < 0 or orien_goal[0] > 3.14:
 		rospy.logerr("Invalid goal for orientation")
-		return JINTRequestResponse("Invalid goal for orientation")
+		return JINTRequestResponse("Invalid goal for orientation0")
 	
 	if orien_goal[1] > 3.14 or orien_goal[1] < 0:
 		rospy.logerr("Invalid goal for orientation")
-		return JINTRequestResponse("Invalid goal for orientation")
+		return JINTRequestResponse("Invalid goal for orientation1")
 	
 	if orien_goal[2] < -1.54 or orien_goal[2] > 1.54:
 		rospy.logerr("Invalid goal for orientation")
-		return JINTRequestResponse("Invalid goal for orientation")
+		return JINTRequestResponse("Invalid goal for orientation2")
 	
 	r = rospy.Rate(fps)
 
@@ -85,16 +89,18 @@ def handle_interpolation_request(req):
 	pitch_oint = JINT()
 	yaw_oint = JINT()
 
-	while k <= samples:
+	k = 0
+
+	while k <= samples:		
 		# interpolacja polozenia
-		x_pose = x_oint.interpole(req.interpolation_type, act_positon[0], pose_goal[0], samples, k)
-		y_pose = y_oint.interpole(req.interpolation_type, act_positon[1], pose_goal[1], samples, k)
-		z_pose = z_oint.interpole(req.interpolation_type, act_positon[2], pose_goal[2], samples, k)
+		x_pose = x_oint.interpole(req.interpolation_type, act_position[0], pose_goal[0], samples, k)
+		y_pose = y_oint.interpole(req.interpolation_type, act_position[1], pose_goal[1], samples, k)
+		z_pose = z_oint.interpole(req.interpolation_type, act_position[2], pose_goal[2], samples, k)
 
 		# aktualizacja polozenia 
-		act_positon[0] = x_pose
-		act_positon[1] = y_pose
-		act_positon[2] = z_pose
+		act_position[0] = x_pose
+		act_position[1] = y_pose
+		act_position[2] = z_pose
 
 		# interpolacja orientacji
 		roll_pose = roll_oint.interpole(req.interpolation_type, act_orientation[0], orien_goal[0], samples, k)
@@ -109,9 +115,10 @@ def handle_interpolation_request(req):
 		# publikacja wyniku
 		pose = create_pose()
 		pub = rospy.Publisher('/pose_stamped', PoseStamped, queue_size = 10)
-		pub.publish(state)
+		pub.publish(pose)
 		k = k + 1
 		r.sleep()
+	return "ok"
 	
 def oint_server():
 	rospy.init_node('oint')
@@ -123,6 +130,8 @@ def oint_server():
 	rospy.spin()
 
 if __name__ == "__main__":
+	global act_position
+	global act_orientation
 	act_position = [0.0, 0.0, 0.0]
 	act_orientation =  [0.0, 0.0, 0.0]
 	oint_server()

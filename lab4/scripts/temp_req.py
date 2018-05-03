@@ -16,7 +16,7 @@ from lab4.srv import *
 
 
 rospy.wait_for_service('jint')
-interpol_req = rospy.ServiceProxy('jint', InterpolationRequest)
+interpol_req = rospy.ServiceProxy('jint', JINTRequest)
 
 
 try:

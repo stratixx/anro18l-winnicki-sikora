@@ -28,7 +28,7 @@ class JINT:
 			self.last_params = params
 		
 		self.last_t = t
-		print(params)
+		#print(params)
 		if t < (t1/2):
 			return params[0][0]*(t**2) + params[1][0]*t + params[2][0]
 		else:
@@ -53,7 +53,7 @@ class JINT:
 			self.last_params = params
 			
 		self.last_t = t
-		print(params)
+		#print(params)
 		if t < (t1/5):
 			return params[0][0]*(t**2) + params[1][0]*t + params[2][0]
 		if t >= t1/5 and t < (4*t1/5):
