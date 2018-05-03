@@ -72,7 +72,7 @@ Visualization Manager:
         gripper:
           Alpha: 1
           Show Axes: true
-          Show Trail: false
+          Show Trail: true
           Value: true
         segment_1:
           Alpha: 1

@@ -114,13 +114,13 @@ def handle_interpolation_request(req):
 	
 		# publikacja wyniku
 		pose = create_pose()
-		pub = rospy.Publisher('/pose_stamped', PoseStamped, queue_size = 10)
 		pub.publish(pose)
 		k = k + 1
 		r.sleep()
 	return "ok"
 	
 def oint_server():
+	global pub
 	rospy.init_node('oint')
 	s = rospy.Service('oint', OINTRequest, handle_interpolation_request)
 	pub = rospy.Publisher('/pose_stamped', PoseStamped, queue_size = 10)	
