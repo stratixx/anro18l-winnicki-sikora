@@ -9,6 +9,7 @@ Panels:
         - /RobotModel1
         - /RobotModel1/Links1
         - /RobotModel1/Links1/gripper1
+        - /RobotModel1/Links1/gripperTool1
         - /RobotModel1/Links1/segment_11
         - /RobotModel1/Links1/segment_21
         - /PoseOINT1
@@ -72,6 +73,11 @@ Visualization Manager:
         gripper:
           Alpha: 1
           Show Axes: true
+          Show Trail: false
+          Value: true
+        gripperTool:
+          Alpha: 1
+          Show Axes: false
           Show Trail: true
           Value: true
         segment_1:
@@ -99,6 +105,8 @@ Visualization Manager:
           Value: true
         gripper:
           Value: true
+        gripperTool:
+          Value: true
         segment_1:
           Value: true
         segment_2:
@@ -113,7 +121,8 @@ Visualization Manager:
           segment_1:
             segment_2:
               gripper:
-                {}
+                gripperTool:
+                  {}
       Update Interval: 0
       Value: true
     - Alpha: 1
@@ -171,10 +180,10 @@ Visualization Manager:
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.00999999978
-      Pitch: 1.1597966
+      Pitch: 0.69479686
       Target Frame: <Fixed Frame>
       Value: Orbit (rviz)
-      Yaw: 2.79492545
+      Yaw: 0.399922311
     Saved: ~
 Window Geometry:
   Displays:

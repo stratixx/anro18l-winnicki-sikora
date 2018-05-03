@@ -48,6 +48,7 @@
 	<xacro:segmentMacro name="segment_1" color="white" xyz="0 0 ${0}"               size="0 0 0"/>
 	<xacro:segmentMacro name="segment_2" color="blue"  xyz="${a2/2} 0 0 "           size="${a2} 0.1 0.1 "/>
 	<xacro:segmentMacro name="gripper"   color="white" xyz="${gripper_size/2} 0 0 " size="${gripper_size} 0.1 0.1 "/>
+	<xacro:segmentMacro name="gripperTool"   color="black" xyz="0 0 0 " size="0 0.1 0.1 "/>
 
 	<!-- Wykorzystanie makra jointRevolute do stworzenia polaczen pomiedzy elementami robota -->
 	<xacro:jointRevolute parent="base_link" child="segment_1" rpy="0 0 0"        xyz="0 0 ${base_size}" 
@@ -56,5 +57,11 @@
 		axis_xyz="0 0 1" limit_low="-1.54" limit_up="0"/>
 	<xacro:jointRevolute parent="segment_2" child="gripper"   rpy="0 0 0"        xyz="${a2} 0 0"        
 		axis_xyz="0 0 1" limit_low="0" limit_up="1.54"/>
+
+	<joint name="gripperTool_to_gripper_joint_continuous" type="fixed">
+		<parent link="gripper"/>
+		<child link="gripperTool"/>
+		<origin rpy="0 0 0" xyz="${gripper_size} 0 0"/>
+	</joint>
 </robot>
 
