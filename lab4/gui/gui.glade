@@ -1,18 +1,71 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- Generated with glade 3.18.3 -->
 <interface>
-  <!-- interface-requires gtk+ 3.0 -->
-  <object class="GtkWindow" id="MainWindow">
+  <requires lib="gtk+" version="3.0"/>
+  <object class="GtkApplicationWindow" id="applicationwindow1">
     <property name="can_focus">False</property>
-    <signal name="destroy" handler="onDestroy" swapped="no"/>
     <child>
-      <object class="GtkButton" id="button1">
-        <property name="label" translatable="yes">button</property>
-        <property name="use_action_appearance">False</property>
+      <object class="GtkGrid" id="grid2">
         <property name="visible">True</property>
-        <property name="can_focus">True</property>
-        <property name="receives_default">True</property>
-        <property name="use_action_appearance">False</property>
-        <signal name="pressed" handler="onButtonPressed" swapped="no"/>
+        <property name="can_focus">False</property>
+        <child>
+          <object class="GtkScale" id="scale1">
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="margin_left">123</property>
+            <property name="margin_right">128</property>
+            <property name="lower_stepper_sensitivity">on</property>
+            <property name="show_fill_level">True</property>
+            <property name="round_digits">1</property>
+            <property name="digits">2</property>
+          </object>
+          <packing>
+            <property name="left_attach">1</property>
+            <property name="top_attach">1</property>
+          </packing>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
       </object>
     </child>
   </object>
