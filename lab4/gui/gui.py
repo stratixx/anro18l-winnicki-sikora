@@ -12,6 +12,8 @@ class MyWindow(Gtk.Window):
 	# init
 	def __init__(self):
 		Gtk.Window.__init__(self, title="jint operator")
+		
+		self.set_default_size(500, 500)
 		self.set_resizable(False)
 
 		grid = Gtk.Grid()
@@ -19,25 +21,11 @@ class MyWindow(Gtk.Window):
 		grid.set_row_spacing(5)
 		grid.set_column_spacing(10)
 
-	# fillers 
-		filler_left = Gtk.Label()
-		filler_left.set_label('')
-		grid.attach(filler_left, 0, 0, 1, 12)
-
-		filler_right = Gtk.Label()
-		filler_right.set_label('')
-		grid.attach(filler_right, 10, 0, 1, 12)
-
-		filler_top = Gtk.Label()
-		filler_top.set_label('')
-		grid.attach(filler_top, 1, 0, 9, 1)
-
 	# slider 0
-		# label0
-		label0 = Gtk.Label()
-		label0.set_label("base_link_to_segment_1_joint_continous")		
-		label0.set_halign(Gtk.Align.START)
-		grid.attach(label0, 1, 0, 4, 1)
+
+		slider0_frame = Gtk.Frame()
+		slider0_frame.set_label("base_link_to_segment_1_joint_continous")
+		slider0_frame.set_border_width(5)
 
 		# scale0 
 		self.scale0 = Gtk.Scale(orientation=Gtk.Orientation.HORIZONTAL, adjustment=Gtk.Adjustment(0,-3.14,3.14,0.01,0,0))
@@ -55,14 +43,13 @@ class MyWindow(Gtk.Window):
 		self.scale0.set_digits(2)	
 		self.scale0.set_value_pos(Gtk.PositionType.RIGHT)
 		self.scale0.set_valign(Gtk.Align.START)	
-		grid.attach_next_to(self.scale0, label0, Gtk.PositionType.BOTTOM, 4, 1)
+		slider0_frame.add(self.scale0)
+		grid.attach(slider0_frame, 0, 0, 1, 1)
 
 	# slider 1
-		# label1
-		label1 = Gtk.Label()
-		label1.set_label("segment1_to_segment_2_joint_continous")		
-		label1.set_halign(Gtk.Align.START)
-		grid.attach(label1, 1, 4, 4, 1)
+		slider1_frame = Gtk.Frame()
+		slider1_frame.set_label("segment_1_to_segment_2_joint_continous")
+		slider1_frame.set_border_width(5)
 
 		# scale1
 		self.scale1 = Gtk.Scale(orientation=Gtk.Orientation.HORIZONTAL, adjustment=Gtk.Adjustment(0,-1.54, 0, 0.01, 0, 0))
@@ -77,14 +64,13 @@ class MyWindow(Gtk.Window):
 		self.scale1.set_digits(2)	
 		self.scale1.set_value_pos(Gtk.PositionType.RIGHT)
 		self.scale1.set_valign(Gtk.Align.START)	
-		grid.attach_next_to(self.scale1, label1, Gtk.PositionType.BOTTOM, 4, 1)
+		slider1_frame.add(self.scale1)
+		grid.attach(slider1_frame, 0, 1, 1, 1)
 
 	# slider 2
-		# label2
-		label2 = Gtk.Label()
-		label2.set_label("segment2_to_gripper_joint_continous")		
-		label2.set_halign(Gtk.Align.START)
-		grid.attach(label2, 1, 8, 4, 1)
+		slider2_frame = Gtk.Frame()
+		slider2_frame.set_label("segment_2_to_gripper_joint_continous")
+		slider2_frame.set_border_width(5)
 
 		# scale2
 		self.scale2 = Gtk.Scale(orientation=Gtk.Orientation.HORIZONTAL, adjustment=Gtk.Adjustment(0, 0, 1.54, 0.01, 0, 0))
@@ -99,19 +85,56 @@ class MyWindow(Gtk.Window):
 		self.scale2.set_digits(2)	
 		self.scale2.set_value_pos(Gtk.PositionType.RIGHT)
 		self.scale2.set_valign(Gtk.Align.START)	
-		grid.attach_next_to(self.scale2, label2, Gtk.PositionType.BOTTOM, 4, 1)
+		slider2_frame.add(self.scale2)
+		grid.attach(slider2_frame, 0, 2, 1, 1)
+
+	# label_down
+		self.msg_label = Gtk.Label()
+		self.msg_label.set_label(" Ready...")
+		self.msg_label.set_halign(Gtk.Align.START)
+		grid.attach(self.msg_label, 0, 3, 4, 1) 
 
 	# move_button
 		move_button = Gtk.Button(label="Move")
 		move_button.connect("clicked", self.on_button_clicked)
-		grid.attach_next_to(move_button, filler_right, Gtk.PositionType.LEFT, 1, 1)
+		grid.attach(move_button, 2, 0 ,1, 1)
 	
+	# time_text_box
+		self.time_box = Gtk.Entry()
+		self.time_box.set_text("1.00")
+		self.time_box.set_width_chars(4)
+        	grid.attach(self.time_box, 1, 0, 1, 1)
+
+	# radios 
+		self.chosen_type = "linear"
+		radio_frame = Gtk.Frame()
+		radio_frame.set_label("Interpolation type")
+		radio_frame.set_border_width(5)
+		radio1 = Gtk.RadioButton.new_with_label_from_widget(None, "linear")
+		radio1.connect("toggled", self.on_button_toggled, "linear")
+		radio2 = Gtk.RadioButton.new_with_label_from_widget(radio1, "quadratic")
+		radio2.connect("toggled", self.on_button_toggled, "quad_spline")
+		radio3 = Gtk.RadioButton.new_with_label_from_widget(radio1, "trapezoid_vel")
+		radio3.connect("toggled", self.on_button_toggled, "trapezoid_vel")
+		hbox = Gtk.Box(spacing=6, orientation=Gtk.Orientation.VERTICAL)
+		radio_frame.add(hbox)
+		
+		hbox.pack_start(radio1, False, False, 0)
+		hbox.pack_start(radio2, False, False, 0)
+		hbox.pack_start(radio3, False, False, 0)
+		grid.attach(radio_frame, 1, 1, 2, 2)
+
+
+	def on_button_toggled(self, widget, name):
+		self.chosen_type = name
+		
 	# click handler
 	def on_button_clicked(self, widget):
 		print(self.scale0.get_value())
 		print(self.scale1.get_value())
 		print(self.scale2.get_value())
-
+		print(self.chosen_type)
+		print(self.time_box.get_text())
 win = MyWindow() # creating window
 win.connect('destroy', Gtk.main_quit) # exit handler
 win.show_all() # show 
