@@ -6,11 +6,17 @@ import gi
 gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk
 
+import rospy
+from lab4.srv import *
+import gobject
+import threading
+
 # window class
 class MyWindow(Gtk.Window):
 
 	# init
 	def __init__(self):
+		self.handling = False
 		Gtk.Window.__init__(self, title="jint operator")
 		
 		self.set_default_size(500, 500)
@@ -91,7 +97,9 @@ class MyWindow(Gtk.Window):
 	# label_down
 		self.msg_label = Gtk.Label()
 		self.msg_label.set_label(" Ready...")
+		self.msg_label.set_width_chars(40)
 		self.msg_label.set_halign(Gtk.Align.START)
+		self.msg_label.set_valign(Gtk.Align.START)
 		grid.attach(self.msg_label, 0, 3, 4, 1) 
 
 	# move_button
@@ -122,19 +130,52 @@ class MyWindow(Gtk.Window):
 		hbox.pack_start(radio1, False, False, 0)
 		hbox.pack_start(radio2, False, False, 0)
 		hbox.pack_start(radio3, False, False, 0)
-		grid.attach(radio_frame, 1, 1, 2, 2)
-
+		grid.attach(radio_frame, 1, 1, 2, 2) 
 
 	def on_button_toggled(self, widget, name):
 		self.chosen_type = name
 		
+	
 	# click handler
 	def on_button_clicked(self, widget):
-		print(self.scale0.get_value())
-		print(self.scale1.get_value())
-		print(self.scale2.get_value())
-		print(self.chosen_type)
-		print(self.time_box.get_text())
+		if self.handling == True:
+			return
+		self.handling = True
+		handler = Handler(float(self.scale0.get_value()), float(self.scale1.get_value()), float(self.scale2.get_value()), float(self.time_box.get_text
+()), str(self.chosen_type), self)
+		handler.start()
+		self.msg_label.set_label(" Waiting for response...")
+	
+# thread-safe handler
+class Handler(threading.Thread):
+	def __init__(self, angle0, angle1, angle2, time, type, obj):
+		Thread.__init__(self)
+		self.ang0 = angle0
+		self.ang1 = angle1
+		self.ang2 = angle2
+		self.time = time
+		self.type = type
+		self.obj = obj
+
+	def run(self):
+		try:
+			rospy.wait_for_service('jint', timeout=5)
+		except rospy.ROSException:
+			resp1 = JINTRequestResponse()
+			resp1.state = "ERROR: Service unreachable or busy"
+
+		jint = rospy.ServiceProxy('jint', JINTRequest)
+		try:
+			resp1 = jint(float(self.ang0), float(self.ang1), float(self.ang2), float(self.time), str(self.type))
+			
+		except rospy.ServiceException:
+			resp1 = JINTRequestResponse()
+			resp1.state = "ERROR: Service unreachable" 	
+		#self.obj.msg_label.set_text(resp1.state)
+		print(resp1)
+
+
+
 win = MyWindow() # creating window
 win.connect('destroy', Gtk.main_quit) # exit handler
 win.show_all() # show 
