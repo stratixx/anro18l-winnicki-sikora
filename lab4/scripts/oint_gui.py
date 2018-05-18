@@ -17,7 +17,7 @@ class MyWindow(Gtk.Window):
 	# init
 	def __init__(self):
 		self.handling = False
-		Gtk.Window.__init__(self, title="jint operator")
+		Gtk.Window.__init__(self, title="oint operator")
 		
 		self.set_default_size(500, 500)
 		self.set_resizable(False)
@@ -30,7 +30,7 @@ class MyWindow(Gtk.Window):
 	# slider 0
 
 		slider0_frame = Gtk.Frame()
-		slider0_frame.set_label("base_link_to_segment_1_joint_continous")
+		slider0_frame.set_label("Roll                            ")
 		slider0_frame.set_border_width(5)
 
 		# scale0 
@@ -54,17 +54,20 @@ class MyWindow(Gtk.Window):
 
 	# slider 1
 		slider1_frame = Gtk.Frame()
-		slider1_frame.set_label("segment_1_to_segment_2_joint_continous")
+		slider1_frame.set_label("Pitch                           ")
 		slider1_frame.set_border_width(5)
 
 		# scale1
-		self.scale1 = Gtk.Scale(orientation=Gtk.Orientation.HORIZONTAL, adjustment=Gtk.Adjustment(0,-1.54, 0, 0.01, 0, 0))
+		self.scale1 = Gtk.Scale(orientation=Gtk.Orientation.HORIZONTAL, adjustment=Gtk.Adjustment(0,-3.14,3.14,0.01,0,0))
 
 		# marks on slider
 		self.scale1.add_mark(0, Gtk.PositionType.TOP, None)
+		self.scale1.add_mark(1, Gtk.PositionType.TOP, None)
+		self.scale1.add_mark(2, Gtk.PositionType.TOP, None)
+		self.scale1.add_mark(3, Gtk.PositionType.TOP, None)
 		self.scale1.add_mark(-1, Gtk.PositionType.TOP, None)
-		self.scale1.add_mark(-0.5, Gtk.PositionType.TOP, None)
-		self.scale1.add_mark(-1.54, Gtk.PositionType.TOP, None)
+		self.scale1.add_mark(-2, Gtk.PositionType.TOP, None)
+		self.scale1.add_mark(-3, Gtk.PositionType.TOP, None)
 
 		# slider value 
 		self.scale1.set_digits(2)	
@@ -75,17 +78,20 @@ class MyWindow(Gtk.Window):
 
 	# slider 2
 		slider2_frame = Gtk.Frame()
-		slider2_frame.set_label("segment_2_to_gripper_joint_continous")
+		slider2_frame.set_label("Yaw                             ")
 		slider2_frame.set_border_width(5)
 
 		# scale2
-		self.scale2 = Gtk.Scale(orientation=Gtk.Orientation.HORIZONTAL, adjustment=Gtk.Adjustment(0, 0, 1.54, 0.01, 0, 0))
+		self.scale2 = Gtk.Scale(orientation=Gtk.Orientation.HORIZONTAL, adjustment=Gtk.Adjustment(0,-3.14,3.14,0.01,0,0))
 
 		# marks on slider
 		self.scale2.add_mark(0, Gtk.PositionType.TOP, None)
 		self.scale2.add_mark(1, Gtk.PositionType.TOP, None)
-		self.scale2.add_mark(0.5, Gtk.PositionType.TOP, None)
-		self.scale2.add_mark(1.54, Gtk.PositionType.TOP, None)
+		self.scale2.add_mark(2, Gtk.PositionType.TOP, None)
+		self.scale2.add_mark(3, Gtk.PositionType.TOP, None)
+		self.scale2.add_mark(-1, Gtk.PositionType.TOP, None)
+		self.scale2.add_mark(-2, Gtk.PositionType.TOP, None)
+		self.scale2.add_mark(-3, Gtk.PositionType.TOP, None)
 
 		# slider value 
 		self.scale2.set_digits(2)	
@@ -106,13 +112,54 @@ class MyWindow(Gtk.Window):
 	# move_button
 		move_button = Gtk.Button(label="Move")
 		move_button.connect("clicked", self.on_button_clicked)
-		grid.attach(move_button, 2, 0 ,1, 1)
+		grid.attach(move_button, 2, 0 ,2, 1)
 	
 	# time_text_box
 		self.time_box = Gtk.Entry()
 		self.time_box.set_text("1.00")
 		self.time_box.set_width_chars(4)
         	grid.attach(self.time_box, 1, 0, 1, 1)
+
+	# x box
+		self.x_box = Gtk.Entry()
+		self.x_box.set_text("0.00")
+		self.x_box.set_width_chars(4)
+		xlabel = Gtk.Label()
+		xlabel.set_label("x pos ")
+		xpack= Gtk.Box(spacing=6, orientation=Gtk.Orientation.HORIZONTAL)
+		xpack.pack_start(self.x_box, False, False, 0)
+		xpack.pack_start(xlabel, False, False, 0)
+
+	# y box
+		self.y_box = Gtk.Entry()
+		self.y_box.set_text("0.00")
+		self.y_box.set_width_chars(4)
+		ylabel = Gtk.Label()
+		ylabel.set_label("y pos	")
+		ypack= Gtk.Box(spacing=6, orientation=Gtk.Orientation.HORIZONTAL)
+		ypack.pack_start(self.y_box, False, False, 0)
+		ypack.pack_start(ylabel, False, False, 0)
+	
+	# z box
+		self.z_box = Gtk.Entry()
+		self.z_box.set_text("0.00")
+		self.z_box.set_width_chars(4)
+		zlabel = Gtk.Label()
+		zlabel.set_label("z pos	")
+		zpack= Gtk.Box(spacing=6, orientation=Gtk.Orientation.HORIZONTAL)
+		zpack.pack_start(self.z_box, False, False, 0)
+		zpack.pack_start(zlabel, False, False, 0)	
+
+	# pos box
+		pos_pack= Gtk.Box(spacing=6, orientation=Gtk.Orientation.VERTICAL)
+		pos_pack.add(xpack)
+		pos_pack.add(ypack)
+		pos_pack.add(zpack)
+		pos_frame = Gtk.Frame()
+		pos_frame.set_label("Position")
+		pos_frame.add(pos_pack)
+		grid.attach(pos_frame, 1, 1, 1, 2)
+		
 
 	# radios 
 		self.chosen_type = "linear"
@@ -131,7 +178,7 @@ class MyWindow(Gtk.Window):
 		hbox.pack_start(radio1, False, False, 0)
 		hbox.pack_start(radio2, False, False, 0)
 		hbox.pack_start(radio3, False, False, 0)
-		grid.attach(radio_frame, 1, 1, 2, 2) 
+		grid.attach(radio_frame, 2, 1, 2, 2) 
 
 	def on_button_toggled(self, widget, name):
 		self.chosen_type = name
@@ -150,7 +197,10 @@ class MyWindow(Gtk.Window):
 			return
 		self.handling = True
 		try:
-			task = Task(float(self.scale0.get_value()), 
+			task = Task(float(self.x_box.get_text()),
+				    float(self.y_box.get_text()),
+				    float(self.z_box.get_text()),
+				    float(self.scale0.get_value()), 
 				    float(self.scale1.get_value()), 
 			  	    float(self.scale2.get_value()), 
 				    float(self.time_box.get_text()), 
@@ -164,14 +214,15 @@ class MyWindow(Gtk.Window):
 		
 	
 class Task:
-	def __init__(self, angle0, angle1, angle2, time, typ, obj):
-		self.sup =  obj
-		self.ang0 = angle0
-		self.ang1 = angle1
-		self.ang2 = angle2
+	def __init__(self, x, y, z, roll, pitch, yaw, time, typ, obj):
+		self.x =  x
+		self.y = y
+		self.z = z
+		self.roll = roll
+		self.pitch = pitch
+		self.yaw = yaw		
 		self.time = time
 		self.type = typ
-
 
 
 class RequestHandler(Thread):
@@ -188,29 +239,32 @@ class RequestHandler(Thread):
 				continue
 			else:
 				try:
-					rospy.wait_for_service('jint', timeout=3)
+					rospy.wait_for_service('Oint', timeout=3)
 
 				except rospy.ROSException:
-					resp1 = JINTRequestResponse()
+					resp1 = OINTRequestResponse()
 					resp1.state = "ERROR: Service unreachable or busy"
 					self.result_queue.put(resp1)
 					continue
 
 				self.window.print_response(" Moving...", handling=True)
-				jint = rospy.ServiceProxy('jint', JINTRequest)
+				oint = rospy.ServiceProxy('oint', OINTRequest)
 				try:
-					resp1 = jint(float(req.ang0), 
-						     float(req.ang1), 
-						     float(req.ang2), 
+					resp1 = oint(float(req.x), 
+						     float(req.y), 
+						     float(req.z),
+						     float(req.roll), 
+						     float(req.pitch), 
+						     float(req.yaw), 
 						     float(req.time), 
 						     str(req.type))
 				
 				except ValueError:
-					resp1 = JINTRequestResponse()
+					resp1 = OINTRequestResponse()
 					resp1.state = "ERROR: Invalid time"
 
 				except rospy.ServiceException:
-					resp1 = JINTRequestResponse()
+					resp1 = OINTRequestResponse()
 					resp1.state = "ERROR: Service unreachable" 	
 				self.result_queue.put(resp1)
 
