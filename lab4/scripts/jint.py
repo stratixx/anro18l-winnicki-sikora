@@ -71,7 +71,7 @@ def handle_interpolation_request(req):
 		k = k + 1
 		r.sleep()
 				
-	return JINTRequestResponse('done')
+	return JINTRequestResponse(' Ready...')
 
 def jint_server():
 	rospy.init_node('jint')

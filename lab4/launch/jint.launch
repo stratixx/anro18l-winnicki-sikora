@@ -33,7 +33,6 @@
   <node name="rviz" pkg="rviz" type="rviz" args="-d $(arg rvizconfig)" required="true" />
   <node name="robot_state_publisher" pkg="robot_state_publisher" type="state_publisher" />
   <node name="jint" pkg="lab4" type="jint.py" />
-
-  <node name="oint" pkg="lab4" type="oint.py" />
+  <node name="jint_service" pkg="lab4" type="jint_gui.py" />
 
 </launch>

@@ -8,8 +8,8 @@ from gi.repository import Gtk
 
 import rospy
 from lab4.srv import *
-import gobject
-import threading
+from threading import Thread
+import Queue
 
 # window class
 class MyWindow(Gtk.Window):
@@ -21,7 +21,7 @@ class MyWindow(Gtk.Window):
 		
 		self.set_default_size(500, 500)
 		self.set_resizable(False)
-
+		self.request_queue = None
 		grid = Gtk.Grid()
 		self.add(grid)
 		grid.set_row_spacing(5)
@@ -99,6 +99,7 @@ class MyWindow(Gtk.Window):
 		self.msg_label.set_label(" Ready...")
 		self.msg_label.set_width_chars(40)
 		self.msg_label.set_halign(Gtk.Align.START)
+		self.msg_label.set_xalign(0.0)
 		self.msg_label.set_valign(Gtk.Align.START)
 		grid.attach(self.msg_label, 0, 3, 4, 1) 
 
@@ -136,47 +137,119 @@ class MyWindow(Gtk.Window):
 		self.chosen_type = name
 		
 	
+	def add_queue(self, queue):	
+		self.request_queue = queue
+
+	def print_response(self, msg, handling=False):
+		self.msg_label.set_text(msg)
+		self.handling = handling
+
 	# click handler
 	def on_button_clicked(self, widget):
 		if self.handling == True:
 			return
 		self.handling = True
-		handler = Handler(float(self.scale0.get_value()), float(self.scale1.get_value()), float(self.scale2.get_value()), float(self.time_box.get_text
-()), str(self.chosen_type), self)
-		handler.start()
-		self.msg_label.set_label(" Waiting for response...")
+		try:
+			task = Task(float(self.scale0.get_value()), 
+				    float(self.scale1.get_value()), 
+			  	    float(self.scale2.get_value()), 
+				    float(self.time_box.get_text()), 
+				    str(self.chosen_type), self)
+		except Exception:
+			self.print_response(" ERROR: Invalid Time")
+			return
+
+		self.msg_label.set_label(" Movi...")
+		self.request_queue.put(task)
+		
 	
-# thread-safe handler
-class Handler(threading.Thread):
-	def __init__(self, angle0, angle1, angle2, time, type, obj):
-		Thread.__init__(self)
+class Task:
+	def __init__(self, angle0, angle1, angle2, time, typ, obj):
+		self.sup =  obj
 		self.ang0 = angle0
 		self.ang1 = angle1
 		self.ang2 = angle2
 		self.time = time
-		self.type = type
-		self.obj = obj
+		self.type = typ
+
+
+
+class RequestHandler(Thread):
+	def __init__(self, task_queue, result_queue, win):
+		self.window_alive = True
+		Thread.__init__(self)
+		self.window = win
+		self.task_queue = task_queue
+		self.result_queue = result_queue
+	def run(self):	
+		while self.window_alive == True:
+			req = self.task_queue.get()
+			if req is None:
+				continue
+			else:
+				try:
+					rospy.wait_for_service('jint', timeout=3)
+
+				except rospy.ROSException:
+					resp1 = JINTRequestResponse()
+					resp1.state = "ERROR: Service unreachable or busy"
+					self.result_queue.put(resp1)
+					continue
+
+				self.window.print_response(" Moving...", handling=True)
+				jint = rospy.ServiceProxy('jint', JINTRequest)
+				try:
+					resp1 = jint(float(req.ang0), 
+						     float(req.ang1), 
+						     float(req.ang2), 
+						     float(req.time), 
+						     str(req.type))
+				
+				except ValueError:
+					resp1 = JINTRequestResponse()
+					resp1.state = "ERROR: Invalid time"
+
+				except rospy.ServiceException:
+					resp1 = JINTRequestResponse()
+					resp1.state = "ERROR: Service unreachable" 	
+				self.result_queue.put(resp1)
+
+class ResultHandler(Thread):
+	def __init__(self, result_queue, window):
+		self.window_alive = True
+		Thread.__init__(self)
+		self.result_queue = result_queue
+		self.win = window
 
 	def run(self):
-		try:
-			rospy.wait_for_service('jint', timeout=5)
-		except rospy.ROSException:
-			resp1 = JINTRequestResponse()
-			resp1.state = "ERROR: Service unreachable or busy"
-
-		jint = rospy.ServiceProxy('jint', JINTRequest)
-		try:
-			resp1 = jint(float(self.ang0), float(self.ang1), float(self.ang2), float(self.time), str(self.type))
+		while self.window_alive == True:
+			result = self.result_queue.get()
+			if result is None:
+				continue
+			else:
+				try:
+					self.win.print_response(result.state)
+				except:
+					pass
+				continue
+				
+	
+def quit_handler(arg):
+	request_handler.window_alive = False
+	result_handler.window_alive = False
+	tasks.put(None)
+	results.put(None)
+	Gtk.main_quit(arg)
+	
 			
-		except rospy.ServiceException:
-			resp1 = JINTRequestResponse()
-			resp1.state = "ERROR: Service unreachable" 	
-		#self.obj.msg_label.set_text(resp1.state)
-		print(resp1)
-
-
-
 win = MyWindow() # creating window
-win.connect('destroy', Gtk.main_quit) # exit handler
+tasks = Queue.Queue()
+results = Queue.Queue()
+request_handler = RequestHandler(tasks, results, win)
+request_handler.start()
+result_handler = ResultHandler(results, win)
+result_handler.start()
+win.add_queue(tasks)
+win.connect('destroy', quit_handler) # exit handler
 win.show_all() # show 
 Gtk.main() # main loop
