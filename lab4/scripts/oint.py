@@ -67,19 +67,6 @@ def handle_interpolation_request(req):
 	orien_goal[1] = req.pitch
 	orien_goal[2] = req.yaw
 
-	#sprawdzenie poprawnosci katow
-	if orien_goal[0] < 0 or orien_goal[0] > 3.14:
-		rospy.logerr("Invalid goal for orientation")
-		return JINTRequestResponse("Invalid goal for orientation0")
-	
-	if orien_goal[1] > 3.14 or orien_goal[1] < 0:
-		rospy.logerr("Invalid goal for orientation")
-		return JINTRequestResponse("Invalid goal for orientation1")
-	
-	if orien_goal[2] < -1.54 or orien_goal[2] > 1.54:
-		rospy.logerr("Invalid goal for orientation")
-		return JINTRequestResponse("Invalid goal for orientation2")
-	
 	r = rospy.Rate(fps)
 
 	x_oint = JINT()
@@ -117,7 +104,7 @@ def handle_interpolation_request(req):
 		pub.publish(pose)
 		k = k + 1
 		r.sleep()
-	return "ok"
+	return " Done"
 	
 def oint_server():
 	global pub
