@@ -239,7 +239,7 @@ class RequestHandler(Thread):
 				continue
 			else:
 				try:
-					rospy.wait_for_service('Oint', timeout=3)
+					rospy.wait_for_service('oint', timeout=3)
 
 				except rospy.ROSException:
 					resp1 = OINTRequestResponse()

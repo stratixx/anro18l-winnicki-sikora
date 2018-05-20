@@ -1,0 +1,13 @@
+<launch>
+
+ <!-- Argumenty wywołania pliku .launch -->
+  <arg name="gui" default="False" />
+
+ <!-- Parametry wywołania ointa -->
+  <param name="fps" type="double" value="60"/>
+
+ <!-- Uruchamiane gałęzie-->
+  <node name="oint" pkg="lab4" type="oint.py" />
+  <node name="oint_service" pkg="lab4" type="oint_gui.py"  if="$(eval arg('gui'))"/>
+
+</launch>
