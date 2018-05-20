@@ -110,7 +110,7 @@ def oint_server():
 	global pub
 	rospy.init_node('oint')
 	s = rospy.Service('oint', OINTRequest, handle_interpolation_request)
-	pub = rospy.Publisher('/pose_stamped', PoseStamped, queue_size = 10)	
+	pub = rospy.Publisher('/pose_stamped', PoseStamped, queue_size = 30)	
 	init_state = create_pose()
 	rospy.sleep(0.3)
 	pub.publish(init_state)

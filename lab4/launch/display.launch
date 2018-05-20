@@ -25,9 +25,10 @@
   <param name="d3" type="double" value="0"/>   
   <param name="base_height" type="double" value="$(arg base_height)"/>
   <param name="gripper" type="double" value="$(arg gripper)"/> 
-  
+
  <!-- Uruchamiane gałęzie-->
   <node name="rviz" pkg="rviz" type="rviz" args="-d $(arg rvizconfig)" required="true" />
   <node name="robot_state_publisher" pkg="robot_state_publisher" type="state_publisher" />
+  <node name="silent_publisher" pkg="lab4" type="silent_publisher.py" />
 
 </launch>
