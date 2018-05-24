@@ -1,0 +1,14 @@
+<launch>
+
+ <!-- Argumenty wywołania pliku .launch -->
+  <arg name="gui" default="False" />
+
+ <!-- Parametry wywołania ointa -->
+  <param name="fps" type="double" value="60"/>
+
+ <!-- Uruchamiane gałęzie-->
+  <node name="oint" pkg="lab5" type="oint.py" />
+  <node name="oint_service" pkg="lab5" type="oint_gui.py"  if="$(eval arg('gui'))"/>
+  <node name="IKIN" pkg="lab5" type="ikin.py" />
+
+</launch>
