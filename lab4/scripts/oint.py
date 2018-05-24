@@ -104,7 +104,7 @@ def handle_interpolation_request(req):
 		pub.publish(pose)
 		k = k + 1
 		r.sleep()
-	return " Done"
+	return " Ready..."
 	
 def oint_server():
 	global pub

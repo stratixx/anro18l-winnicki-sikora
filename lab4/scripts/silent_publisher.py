@@ -22,7 +22,7 @@ def talker():
 
 	pub = rospy.Publisher('joint_states', JointState, queue_size=10)
 	counter = 0
-    	while counter < 100:
+    	while counter < 10000:
 		pub.publish(msg)
 		rate.sleep()
 		counter = counter + 1
