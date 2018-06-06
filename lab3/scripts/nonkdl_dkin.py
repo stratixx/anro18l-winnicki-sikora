@@ -108,6 +108,8 @@ def callback(data):
 	KIN1_2 = np.dot(KIN0_1, joints[2])
 	KIN2_3 = np.dot(KIN1_2, joints[3])
 	KIN = KIN2_3
+
+	print(KIN);
 	
 	# obliczenie pozycji koncowki	
 	pos_zero = np.array([0, 0, 0, 1]).transpose()
@@ -143,7 +145,7 @@ def callback(data):
 	
 	pub.publish(pose)
 	#print('Message')
-	print(pose)
+	#print(pose)
 
 def listener():
 	rospy.init_node('NONKDL_DKIN', anonymous=False)
