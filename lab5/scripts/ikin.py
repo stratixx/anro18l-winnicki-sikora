@@ -2,6 +2,7 @@
 
 
 import numpy as np
+from scipy.optimize import 
 import rospy
 import math
 
@@ -16,6 +17,25 @@ global robot # model robota
 global fps
 fps = rospy.get_param('fps')
 
+a2 = 0.4
+a3 = 0.1
+bh = 0.3
+
+class Result:
+	def __init__(self, t1, t2 ,t3):
+		self.t1 = t1
+		self.t2 = t2
+		self.t3 = t3
+
+def fun_z(th2):
+	return z - bh + a2*sin(th2) + a3*sin(th2 + th3)
+
+def th1_cos(x, t2, t3):
+	return acos(x/(a2*cos(t2) + a3*cos(t2 + t3)))
+
+def th1_sin(y, t2, t3):
+	return asin(y/(a2*cos(t2) + a3*cos(t2 + t3)))
+
 
 def callback(data):
 	ointPose = data
@@ -25,17 +45,51 @@ def callback(data):
 	a2 = rospy.get_param('a2')
 	a3 = rospy.get_param('gripper')
 	
-	normxy = np.sqrt(x*x+y*y)
+	t3_d = np.linspace(0, np.pi/2, num=100)
+	sol = np.zeros(100)
 
-	ang1 = np.arctan2(y/normxy,x/normxy) # To chyba nawet dziala
-	ang2 = 0
-	ang3 = 0
+	results = []
 
-	#sumAng23 = np.arcsin(-z/(a2+a3))
-	#ang1 = np.arccos( x/( (a3+a2)*np.cos(sumAng23) ) )
-	#ang2 = sumAng23-0.0
-	#ang3 = 0.0
+	i = 0
+	while i < 100:
+		th3 = t3_d[i]
+		tmp = optimize.root(fun_z, 0)
+		sol[i] = tmp.x
 	
+		try:
+			t1c= th1_cos(x, sol[i], t3_d[i])
+			t1s= th1_sin(y, sol[i], t3_d[i])	
+			if(t1c - t1s > 0.001):
+				i = i + 1
+				continue
+		except ValueError:
+			t1c = 1000
+			t1s = 1000
+			i = i + 1
+			continue
+
+		#sprawdzenie poprawnosci katow
+		if t1c > pi or t1c < -pi:
+			rospy.logerr("Zly kat")
+			raise Exception
+	
+		if sol[i] > 0 or sol[i] < -pi/2:
+			rospy.logerr("Zly kat")
+			raise Exception
+	
+		if t3_d[i] < 0 or t3_d[i] > pi/2:
+			rospy.logerr("Zly kat")
+			raise Exception	
+
+		res = Result(t1c, sol[i], t3_d[i])
+		print(res.t1)
+		print(res.t2)
+		print(res.t3)
+		results.append(res)
+	
+
+
+
 	#sprawdzenie poprawnosci katow
 	if ang1 > pi or ang1 < -pi:
 		rospy.logerr("Zly kat")
