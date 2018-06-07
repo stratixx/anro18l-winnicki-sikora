@@ -8,16 +8,13 @@ rospy.wait_for_service('oint')
 interpol_req = rospy.ServiceProxy('oint', OINTRequest)
 
 t = np.linspace(0,6.28)
-a = 0.200
-b = 0.144
+a = 0.220
+b = 0.1
 i = 0
 while True:
 	y = a*math.cos(t[i])
-	z = b*math.sin(t[i]) + 0.3
-	
-	print(y)
-	print(z)
-	
+	z = b*math.sin(t[i]) + 0.4
+
 	try:
 		resp = interpol_req(float(0.433), 
 				    float(y), 

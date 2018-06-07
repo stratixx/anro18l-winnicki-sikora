@@ -5,7 +5,7 @@ from lab4.srv import *
 
 rospy.wait_for_service('oint')
 interpol_req = rospy.ServiceProxy('oint', OINTRequest)
-table = [[0.433, 0.144, 0.156], [0.433, 0.144, 0.444], [0.433, -0.144, 0.444], [0.433, -0.144, 0.156]]
+table = [[0.433, 0.1, 0.3], [0.433, 0.1, 0.500], [0.433, -0.1, 0.500], [0.433, -0.1, 0.3]]
 i = 0
 while True:
 

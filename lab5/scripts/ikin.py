@@ -35,11 +35,12 @@ def callback(data):
 		h = pow((x/cos(t1)),2) + pow(zz,2)
 		t2 = -atan2(zz*cos(t1),x) - acos((pow(a2,2) - pow(a3,2)+h)/(2*a2*pow(h,0.5)))
 		t3 = acos((-pow(a2,2) - pow(a3,2) + h)/(2*a2*a3))	
-		results = check_solution([t1, t2, t3], x, y, z)
+		#results = check_solution([t1, t2, t3], x, y, z)
 		print(results[3])	
 	except Exception:
-		return
-	"""
+		pass
+		#return
+	
 	#ograniczenia ruchu
 	if t1 > 3.14 or t1 < -3.14:
 		rospy.logerr("Zly kat")
@@ -52,7 +53,7 @@ def callback(data):
 	if t3 < 0 or t3 > 1.54:
 		rospy.logerr("Zly kat")
 		return
-	"""
+	
 	robot.set_angles(t1, t2, t3)
 	state = robot.get_joint_state(fps)	
 	pub.publish(state)
